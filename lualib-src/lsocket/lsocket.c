@@ -192,7 +192,7 @@ static int lsocket_sock__toString(lua_State *L)
 {
 	lSocket *sock = lsocket_checklSocket(L, 1);
 	char buf[TOSTRING_BUFSIZ];
-	if (sprintf(buf, "%s: %p", LSOCKET, sock) >= TOSTRING_BUFSIZ)
+	if (_snprintf(buf, TOSTRING_BUFSIZ, "%s: %p", LSOCKET, sock) >= TOSTRING_BUFSIZ)
 		return luaL_error(L, "Whoopsie... the string representation seems to be too long.");
 		/* this should not happen, just to be sure! */
 	lua_pushstring(L, buf);
@@ -285,7 +285,7 @@ static const char *_addr2string(struct sockaddr *sa, socklen_t slen, char *buf, 
 		s = inet_ntop(sa->sa_family, (const void*) &((struct sockaddr_in6*)sa)->sin6_addr, buf, buflen);
 	else if (sa->sa_family == AF_UNIX) {
 		if (slen > offsetof(struct sockaddr_un, sun_path))
-			strncpy_s(buf, 512, ((struct sockaddr_un*)sa)->sun_path, buflen);
+			strncpy(buf, ((struct sockaddr_un*)sa)->sun_path, buflen);
 		else
 			*buf = 0;
 		s = buf;
@@ -375,7 +375,7 @@ static int _gethostaddr(lua_State *L, const char *addr, int type, int port, int 
 		*protocol = 0;
 		struct sockaddr_un* su = (struct sockaddr_un*) sa;
 		sa->sa_family = AF_UNIX;
-		strcpy_s(&su->sun_path[0], UNIX_PATH_MAX, addr);
+		strcpy(&su->sun_path[0], addr);
 #ifdef HAVE_ABSTRACT_UDSOCKETS
 		if (*addr == '@') su->sun_path[0] = '\0';
 #endif
@@ -390,7 +390,7 @@ static int _gethostaddr(lua_State *L, const char *addr, int type, int port, int 
 	hint.ai_protocol = type == SOCK_STREAM ? IPPROTO_TCP : IPPROTO_UDP;
 	if (_needsnolookup(addr))
 		hint.ai_flags = AI_NUMERICHOST;
-	sprintf(svc, "%d", port);
+	_snprintf(svc, TOSTRING_BUFSIZ , "%d", port);
 
 	int err = getaddrinfo(addr, svc, &hint, &info);
     if (err != 0) {

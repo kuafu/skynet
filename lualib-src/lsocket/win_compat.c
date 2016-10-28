@@ -5,15 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 
-//#include <netinet/in.h>
-//#include <sys/types.h>
-//#include <sys/socket.h>
-//#include <arpa/inet.h>
-//#include <unistd.h>
-//#include <errno.h>
-//#include <fcntl.h>
 
-//
 #pragma warning(disable : 4996) //_CRT_SECURE_NO_WARNINGS
 
 int 
@@ -58,7 +50,7 @@ fcntl(int fd, int cmd, int value) {
 static const char *
 inet_ntop4(const unsigned char *src, char *dst, size_t size) {
 	char tmp[sizeof "255.255.255.255"];
-	size_t len = sprintf(tmp, "%u.%u.%u.%u", src[0], src[1], src[2], src[3]);
+	size_t len = snprintf(tmp, sizeof(tmp), "%u.%u.%u.%u", src[0], src[1], src[2], src[3]);
 	if (len >= size) {
 		return NULL;
 	}
