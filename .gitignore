@@ -21,3 +21,4 @@ build/vs2013/My Amplifier XE Results*
 *.dll
 *.exp
 *.lib
+*.opendb
