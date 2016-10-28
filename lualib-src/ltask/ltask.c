@@ -43,7 +43,7 @@ static int
 ltask(lua_State *L) {
 	lua_State *task = luaL_newstate();
 	if (task == NULL)
-		return luaL_error(L, "luaL_newstate failed");
+		return luaL_error(L, "luaL_newstate failed");;
 	const char * filename = luaL_checkstring(L, 1);
 	lua_pushcfunction(task, inittask);
 	lua_pushlightuserdata(task, (void *)filename);
@@ -105,7 +105,7 @@ run_slice(struct worker *w) {
 	struct schedule *s = S;
 	struct ltask *t = schedule_grabtask(s, w->id);
 	if (t == NULL)
-		return 0;
+		return 0;;
 	lua_State *L = t->L;
 	int args = lua_gettop(L) - 1;
 	int ret = lua_resume(L, NULL, args);
@@ -203,7 +203,7 @@ static int
 lselect(lua_State *L) {
 	lua_rawgetp(L, LUA_REGISTRYINDEX, S);
 	if (lua_type(L, -1) != LUA_TNUMBER)
-		return luaL_error(L, "select should call in a task");
+		return luaL_error(L, "select should call in a task");;
 	taskid id = lua_tointeger(L, -1);
 	lua_pop(L, 1);
 	int n = lua_gettop(L);
