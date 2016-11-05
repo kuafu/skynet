@@ -82,6 +82,10 @@ forward_cb(struct skynet_context * context, void * ud, int type, int session, ui
 
 static int
 _callback(lua_State *L) {
+	static int trace_back = 0;
+	if(trace_back)
+		luaL_dostring(L, "print(debug.traceback() )");
+
 	struct skynet_context * context = lua_touserdata(L, lua_upvalueindex(1));
 	int forward = lua_toboolean(L, 2);
 	luaL_checktype(L,1,LUA_TFUNCTION);
@@ -168,6 +172,10 @@ get_dest_string(lua_State *L, int index) {
  */
 static int
 _send(lua_State *L) {
+	static int trace_back = 0;
+	if(trace_back)
+		luaL_dostring(L, "print(debug.traceback() )");
+
 	struct skynet_context * context = lua_touserdata(L, lua_upvalueindex(1));
 	uint32_t dest = (uint32_t)lua_tointeger(L, 1);
 	const char * dest_string = NULL;
