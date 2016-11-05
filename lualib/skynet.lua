@@ -357,6 +357,8 @@ end
 
 function skynet.send(addr, typename, ...)
 	local p = proto[typename]
+	--print("<skynet.send>",addr, typename, p.id)
+
 	return c.send(addr, p.id, 0 , p.pack(...))
 end
 
@@ -384,6 +386,11 @@ end
 
 function skynet.call(addr, typename, ...)
 	local p = proto[typename]
+	-- print("<skynet.call>")
+	-- print("----------------------")
+	-- print(debug.traceback())
+	-- print("<skynet.call> --->1")
+
 	local session = c.send(addr, p.id , nil , p.pack(...))
 	if session == nil then
 		error("call to invalid address " .. skynet.address(addr))
@@ -393,6 +400,7 @@ end
 
 function skynet.rawcall(addr, typename, msg, sz)
 	local p = proto[typename]
+	--print("<skynet.rawcall>")
 	local session = assert(c.send(addr, p.id , nil , msg, sz), "call to invalid address")
 	return yield_call(addr, session)
 end
@@ -462,6 +470,7 @@ end
 
 local function raw_dispatch_message(prototype, msg, sz, session, source)
 	-- skynet.PTYPE_RESPONSE = 1, read skynet.h
+	-- print("<raw_dispatch_message>")
 	if prototype == 1 then
 		local co = session_id_coroutine[session]
 		if co == "BREAK" then
@@ -522,6 +531,14 @@ function skynet.dispatch_message(...)
 end
 
 function skynet.newservice(name, ...)
+    local args = ...
+    if args == nil then
+        args = "nil"
+    else
+	    args = table.concat({...},",") or "nil"
+    end
+
+	print( "+++ newservice ["..name.."], args:"..args)
 	return skynet.call(".launcher", "lua" , "LAUNCH", "snlua", name, ...)
 end
 
@@ -617,27 +634,35 @@ local function ret(f, ...)
 end
 
 local function init_template(start)
+	--print("init_template")
 	init_all()
 	init_func = {}
 	return ret(init_all, start())
 end
 
 function skynet.pcall(start)
+	--print("<skynet.pcall>")
 	return xpcall(init_template, debug.traceback, start)
 end
 
 function skynet.init_service(start)
+	--print("<skynet.init_service>")
 	local ok, err = skynet.pcall(start)
+	--print("<skynet.init_service> --->1")
 	if not ok then
 		skynet.error("init service failed: " .. tostring(err))
 		skynet.send(".launcher","lua", "ERROR")
 		skynet.exit()
 	else
+		--print("<skynet.init_service> --->2")
 		skynet.send(".launcher","lua", "LAUNCHOK")
+		--print("<skynet.init_service> --->3")
 	end
+	--print("</skynet.init_service>")
 end
 
 function skynet.start(start_func)
+	--print("<skynet.start>")
 	c.callback(skynet.dispatch_message)
 	skynet.timeout(0, function()
 		skynet.init_service(start_func)
