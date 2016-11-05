@@ -16,12 +16,13 @@ for pat in string.gmatch(LUA_SERVICE, "([^;]+);*") do
 	else
 		pattern = pat
 		main = f
+		--print("--->1",SERVICE_NAME, f,msg,filename)
 		break
 	end
 end
 
 if not main then
-	error(table.concat(err, "\n"))
+	error("\n\n ----------------- file error -----------------\n"..table.concat(err, "\n"))
 end
 
 LUA_SERVICE = nil

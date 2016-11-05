@@ -60,7 +60,6 @@
     <Compile Include="examples\simpleweb.lua" />
     <Compile Include="examples\userlog.lua" />
     <Compile Include="examples\watchdog.lua" />
-    <Compile Include="lualib\clientsocket2.lua" />
     <Compile Include="lualib\cluster.lua" />
     <Compile Include="lualib\datacenter.lua" />
     <Compile Include="lualib\dns.lua" />
@@ -99,7 +98,6 @@
     <Compile Include="lualib\sproto.lua" />
     <Compile Include="lualib\sprotoloader.lua" />
     <Compile Include="lualib\sprotoparser.lua" />
-    <Compile Include="lualib\test2.lua" />
     <Compile Include="service\bootstrap.lua" />
     <Compile Include="service\cdummy.lua" />
     <Compile Include="service\clusterd.lua" />
@@ -119,7 +117,6 @@
     <Compile Include="service\sharedatad.lua" />
     <Compile Include="service\snaxd.lua" />
     <Compile Include="test\pingserver.lua" />
-    <Compile Include="test\test1.lua" />
     <Compile Include="test\testdatacenter.lua" />
     <Compile Include="test\testdeadcall.lua" />
     <Compile Include="test\testdeadloop.lua" />
