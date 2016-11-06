@@ -1,0 +1,553 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"test",
+				"test_func"
+			]
+		]
+	},
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 153.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/M/skynet/skynet_kuafu/skynet_win/service/cmaster.lua",
+		"/M/skynet/skynet_kuafu/skynet_win/lualib/sprotoloader.lua",
+		"/O/KnowledgeLibrary/Lua/test/test-loadfile.lua",
+		"/O/KnowledgeLibrary/Lua/test/test.lua",
+		"/O/KnowledgeLibrary/Lua/note/Lua 5.3 参考手册.html",
+		"/M/skynet/skynet_kuafu/skynet_win/examples/protoloader.lua",
+		"/M/skynet/skynet_kuafu/skynet_win/examples/proto.lua",
+		"/I/Slam/qt/qt-4.8.7/README",
+		"/M/skynet/skynet_kuafu/skynet_win/README.md",
+		"/M/skynet/skynet_kuafu/skynet_win/lualib/sproto.lua",
+		"/O/GameDev/Script/lua/lua/sources/lua/test/sort.lua",
+		"/O/GameDev/Script/lua/lua/sources/lua/test/life.lua",
+		"/O/GameDev/Script/lua/lua/sources/lua/test/env.lua",
+		"/O/GameDev/Script/lua/lua/code/lua_c/array3.lua",
+		"/O/GameDev/Script/lua/lua/sources/lua-5.1.3/lua-5.1.3/src/Makefile",
+		"/I/Slam/qt/qt-4.8.7/INSTALL",
+		"/K/githud/kuafu/UnrealEngine/Engine/Build/BatchFiles/GenerateProjectFiles.bat",
+		"/E/FLY329.DAT",
+		"/I/Slam/ORB_SLAM2/src/Map.cc",
+		"/I/Slam/ORB_SLAM2/README.md",
+		"/I/Slam/ORB_SLAM2/src/MapPoint.cc",
+		"/I/Slam/ORB_SLAM2/src/MapDrawer.cc",
+		"/I/Slam/ORB_SLAM2/src/Initializer.cc",
+		"/I/Slam/ORB_SLAM2/src/FrameDrawer.cc",
+		"/I/Slam/ORB_SLAM2/src/Frame.cc",
+		"/I/Slam/ORB_SLAM2/src/Converter.cc",
+		"/K/projects/HeliumRain/HeliumRain-master/HeliumRain.uproject",
+		"/H/2015年十一/DSC_2176.AVI",
+		"/M/TestAndroidBuild/tinyxml-android-master/tinyxml-android-master/jni/Android.mk",
+		"/M/TestAndroidBuild/artoolkit5-5.2/artoolkit5-5.2/android/build.bat",
+		"/M/neox/XGame/NeoX/BuildAndroid/neox_android/jni/Android.mk",
+		"/M/TestAndroidBuild/OpenCV-3.1.0-android-sdk/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk",
+		"/M/TestAndroidBuild/platform_external_tinyxml-master/platform_external_tinyxml-master/Android.mk",
+		"/M/TestAndroidBuild/artoolkit5-5.2/artoolkit5-5.2/android/jni/Application.mk",
+		"/M/TestAndroidBuild/artoolkit5-5.2/artoolkit5-5.2/android/build_native_examples.sh",
+		"/M/TestAndroidBuild/artoolkit5-5.2/artoolkit5-5.2/android/SetNDKBuildVars.bat",
+		"/M/TestAndroidBuild/artoolkit5-5.2/artoolkit5-5.2/android/jni/Android.mk",
+		"/M/TestAndroidBuild/artoolkit5-5.2/artoolkit5-5.2/Configure-win32.vbs",
+		"/H/巧虎/巧虎1-h.THM",
+		"/E/Demo/shipping/script/com/data/cdata/refresh_monster_monsterguanka1.py",
+		"/E/Alpha/shipping/script/entities/components/buff/BuffComp_21001.py",
+		"/E/Alpha/shipping/script/lib/guppy/etc/OutputHandling.py",
+		"/E/Alpha/shipping/script/TouchController.py",
+		"/E/Alpha/shipping/script/entities/components/buff/BuffComp_2023.py",
+		"/E/Alpha/shipping/script/entities/components/buff/BuffComp_2020.py",
+		"/E/Alpha/shipping/script/entities/components/buff/BuffComp_2000.py",
+		"/E/Alpha/shipping/script/avatarmembers/CommonMember.py",
+		"/E/Alpha/shipping/script/lib/mobilerpc/ChannelObjs.py",
+		"/E/Alpha/shipping/script/engine/logoutput.py",
+		"/E/Alpha/shipping/script/com/data/cdata/skill.py",
+		"/E/Alpha/shipping/script/entities/ActorTable.txt",
+		"/E/Alpha/shipping/script/lib/Crypto/Cipher/ARC2.py",
+		"/E/Alpha/shipping/script/entities/components/skill/SkillComp_2092.py",
+		"/E/Alpha/shipping/script/com/data/cdata/state.py",
+		"/E/Alpha/shipping/script/lib/stat.py",
+		"/E/Alpha/shipping/script/lib/google/protobuf/internal/service_reflection_test.py",
+		"/E/Alpha/shipping/script/entities/components/BuffComp.py",
+		"/E/Alpha/shipping/script/entities/components/BuffComp.py.bak",
+		"/E/Alpha/shipping/script/entities/components/BuffMgrComp.py",
+		"/E/Alpha/shipping/script/avatarmembers/LANMember.py",
+		"/E/Alpha/shipping/script/lib/linecache.py",
+		"/E/Alpha/shipping/script/module/ghosts/GhostIllustratePanel.py",
+		"/E/Alpha/shipping/script/entities/components/buff/BuffComp_2092.py",
+		"/E/Alpha/shipping/script/entities/components/skill/SkillComp_2093.py",
+		"/E/Alpha/shipping/script/entities/components/skill/SkillComp_2091.py",
+		"/E/Alpha/shipping/script/entities/components/buff/BuffComp_2082.py.bak",
+		"/E/Alpha/shipping/script/entities/components/BuffMgrComp.py.bak",
+		"/E/Alpha/shipping/script/lib/google/protobuf/text_format.py",
+		"/E/Alpha/shipping/script/lib/google/protobuf/internal/wire_format.py",
+		"/E/Alpha/shipping/script/lib/google/protobuf/internal/text_format_test.py",
+		"/E/Alpha/shipping/script/com/data/cdata/buff.py",
+		"/E/Alpha/shipping/res/model/hetong/hetong.ags",
+		"/E/Alpha/shipping/res/model/hetong/hetong.gim",
+		"/E/Alpha/shipping/res/model/hetong/hetong.gis",
+		"/E/Alpha/shipping/script/entities/components/skill/SkillComp_2082.py",
+		"/E/Alpha/shipping/script/entities/components/buff/BuffComp_2082.py",
+		"/E/Alpha/shipping/script/SkillComp_AthenaExclamation.py",
+		"/E/Alpha/shipping/script/entities/components/buff/BuffComp_1010.py",
+		"/E/Alpha/shipping/script/lib/encodings/iso8859_10.py",
+		"/E/Alpha/shipping/script/Globals.py",
+		"/E/Alpha/shipping/script/SceneManager.py.bak",
+		"/E/Alpha/shipping/script/pathfinding.py",
+		"/E/Alpha/shipping/script/entities/components/buff/BuffComp_2081.py",
+		"/E/Alpha/shipping/script/Server.py",
+		"/E/Alpha/shipping/script/GameWorld.py",
+		"/H/Unreal/The Garden of Eden in Unreal Engine 4 - Brighter Version with Less Fog",
+		"/E/Projects/网易手游/小时代/TinyTimes/assets/script/ui/manager/fit_clothes_manager.jsc",
+		"/E/Alpha/art/G37_uiProject/source_res/export_plist.bat",
+		"/Z/Documents/test/build/ios/client/Release-iphoneos/g37.app/_CodeSignature/CodeResources",
+		"/Z/Documents/auto_build_g37/config/config.txt",
+		"/Z/Documents/test/auto_build_g37/builder/ios/build_ios.py",
+		"/Z/Documents/test/auto_build_g37/config/config.txt",
+		"/Z/Documents/test/auto_build_g37/res/bin/mac/PVRTexToolCLI",
+		"/E/Alpha/shipping/script/UIManager.py",
+		"/E/Alpha/shipping/res/scene/denglu/denglu_content/music.scn",
+		"/F/XGame/svn-mbcomm/NeoX/demo/collision/res/col_test_content/music.scn",
+		"/E/Alpha/shipping/res/scene/denglu/denglu.scnex",
+		"/E/Alpha/shipping/res/scene/denglu/denglu.scn",
+		"/Z/Library/Keychains/login.keychain",
+		"/E/IOS/build/auto_build_g37/config/launch_cmake_for_android_project.bat",
+		"/E/IOS/build/auto_build_g37/config/set_env.vbs",
+		"/E/IOS/build/auto_build_g37/builder/ios/bin/CMake 2.8-11.app/Contents/share/cmake-2.8/Modules/CPack.Info.plist.in",
+		"/E/IOS/build/auto_build_g37/builder/ios/bin/CMake 2.8-11.app/Contents/share/cmake-2.8/Modules/CPack.DS_Store.in",
+		"/F/XGame/note/NeoX IOS 编译说明.txt",
+		"/E/IOS/build/auto_build_g37/common/const.py",
+		"/E/NeoX IOS 编译说明.txt",
+		"/E/IOS/auto_build_g37/builder/ios/build_ios.py",
+		"/E/IOS/test/Payload/g37.app/_CodeSignature/CodeResources",
+		"/E/IOS/build log/log - 副本.txt",
+		"/Z/Documents/ios-build/build_ios/NeoX.xcodeproj/project.pbxproj",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0_resign/Payload/sanguo.app/CCBReaderLoad.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0_resign/Payload/sanguo.app/game/mail/mailText.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0_resign/Payload/sanguo.app/game/login/loginData.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0/assets/game/map/map.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0/assets/game/net/net.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0/assets/game/config/config.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0/assets/game/main/main.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0/assets/game/main/require.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0_resign/Payload/sanguo.app/game/login/selectBornInfo.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0/assets/game/main/startAnimation.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0/assets/CCBReaderLoad.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0/assets/AudioEngine.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0/assets/game/buildScene/buildingExpand.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0_resign/Payload/sanguo.app/game/userData/simpleUpdateManager.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0_resign/Payload/sanguo.app/game/userData/user.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0_resign/Payload/sanguo.app/game/uiManager/uiListViewSize.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0_resign/Payload/sanguo.app/game/uiManager/uiManager.lua",
+		"/E/Projects/网易手游/G10/sanguo-0.100.0_resign/Payload/sanguo.app/game/uiManager/uiPanelDefine.lua"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 96.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"port",
+			"-->2",
+			"--2",
+			"print",
+			"init_func",
+			"init_template",
+			"send",
+			"raw_dis",
+			"raw_dispatch_message",
+			"call",
+			"pcall",
+			"call",
+			"skynet.call",
+			"c.send(",
+			"加载一个代码块",
+			"pdf-load",
+			"load",
+			"register_protocol",
+			"module rule file for",
+			"entityType",
+			"camera_a",
+			"regis",
+			"castHitEventTime",
+			"tip003",
+			"targetHpChange",
+			"damagePower",
+			"additionalData",
+			"skillCalcResult",
+			"skillCalc",
+			"attack",
+			"ENABLE_CONTROLLER_DEBUG",
+			"createSkillSelectAnim",
+			"updateInit",
+			"message",
+			">>>",
+			"mesagebox",
+			"build_project",
+			"rttTest",
+			"rtt",
+			"compress_textures",
+			"music",
+			"export_ipa",
+			"build_project",
+			"g37",
+			"cmake_path",
+			"create_xcode_project",
+			"build_configuration",
+			"export_ipa",
+			"create_xcode_project",
+			"update_cmake_project",
+			"patch_client_cmakelists",
+			"update_cmake_project",
+			"target",
+			"阴阳师",
+			"rt_scene",
+			"rttTest",
+			"dia",
+			"print",
+			"order",
+			"setz",
+			"tex",
+			"End Object",
+			"Begin Object",
+			"hp()",
+			"_entityDyingCallbackList",
+			"+--'\n",
+			"cbPropChanged",
+			"setnormal",
+			"alpha",
+			"op_panel",
+			"g_ghost_shape",
+			"col_object",
+			"hit_by_ray",
+			"ray",
+			"model_hit_by_ray",
+			"g_ghost_shape",
+			"col_object",
+			"collision",
+			"sweep_test",
+			"g_scn_col",
+			"filter_type",
+			"collision",
+			"1055",
+			"getCCRecorder",
+			"document",
+			"text",
+			"writedoc",
+			"hero",
+			"render_level",
+			"button",
+			"_depends",
+			"DEPENDS",
+			"depend_target",
+			"message",
+			"_MERGED_DEPENDS",
+			"neox_set_depend_property",
+			"${index}",
+			"collision",
+			"sweep_test",
+			"g_scn_col",
+			"collision",
+			"append",
+			"__init__",
+			"add_key_handler",
+			"const",
+			"ENABLE_PROFILER",
+			"const",
+			"initNetwork",
+			"font",
+			"list",
+			"rencent",
+			"open files",
+			"open",
+			"file",
+			"folder",
+			"image",
+			"folder",
+			"solution",
+			"font_size",
+			"remember_open_files",
+			"image",
+			"last file",
+			"last",
+			"NiceDict",
+			"my_render",
+			"model_list",
+			"rotation_matrix",
+			"g_ghost_shape"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"/>",
+			"<",
+			"@SKILL_ID@",
+			"skill"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 187.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"gateserver",
+				"lualib\\snax\\gateserver.lua"
+			],
+			[
+				"wat",
+				"examples\\watchdog.lua"
+			],
+			[
+				"gate",
+				"service\\gate.lua"
+			],
+			[
+				"debug",
+				"service\\debug_console.lua"
+			],
+			[
+				"manager",
+				"lualib\\skynet\\manager.lua"
+			],
+			[
+				"mana",
+				"lualib\\skynet\\manager.lua"
+			],
+			[
+				"boos",
+				"service\\bootstrap.lua"
+			],
+			[
+				"skynet",
+				"lualib\\skynet.lua"
+			],
+			[
+				"proto",
+				"examples\\proto.lua"
+			],
+			[
+				"refresh",
+				"com\\data\\cdata\\refresh_hero_monsterguanka1.py"
+			],
+			[
+				"scene",
+				"SceneManager.py"
+			],
+			[
+				"210",
+				"entities\\components\\buff\\BuffComp_2101.py"
+			],
+			[
+				"gamefxmanager",
+				"scenemembers\\GameFXManager.py"
+			],
+			[
+				"tou",
+				"TouchController.py"
+			],
+			[
+				"2023",
+				"entities\\components\\skill\\SkillComp_2023.py"
+			],
+			[
+				"comp",
+				"entities\\Component.py"
+			],
+			[
+				"login",
+				"scenemembers\\LoginScene.py"
+			],
+			[
+				"skill",
+				"com\\data\\cdata\\skill.py"
+			],
+			[
+				"2092",
+				"entities\\components\\skill\\SkillComp_2092.py"
+			],
+			[
+				"skillta",
+				"entities\\ASkillTable.txt"
+			],
+			[
+				"state_dis",
+				"com\\data\\cdata\\state_display.py"
+			],
+			[
+				"buff",
+				"com\\data\\cdata\\buff.py"
+			],
+			[
+				"formula",
+				"com\\utils\\formula.py"
+			],
+			[
+				"2093",
+				"entities\\components\\skill\\SkillComp_2093.py"
+			],
+			[
+				"2082",
+				"entities\\components\\buff\\BuffComp_2082.py"
+			],
+			[
+				"buffmmg",
+				"entities\\components\\BuffMgrComp.py"
+			],
+			[
+				"2091",
+				"entities\\components\\skill\\SkillComp_2091.py"
+			],
+			[
+				"1010",
+				"entities\\components\\skill\\SkillComp_1010.py"
+			],
+			[
+				"2062",
+				"entities\\components\\buff\\BuffComp_2062.py"
+			],
+			[
+				"touch",
+				"TouchController.py"
+			],
+			[
+				"gamew",
+				"GameWorld.py"
+			],
+			[
+				"panc",
+				"ui\\PanelCombat.py"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 274.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

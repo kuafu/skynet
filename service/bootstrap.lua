@@ -3,7 +3,9 @@ local harbor = require "skynet.harbor"
 require "skynet.manager"	-- import skynet.launch, ...
 local memory = require "memory"
 
+--print("bootstrap --->1")
 skynet.start(function()
+	--print("bootstrap --->2")
 	local sharestring = tonumber(skynet.getenv "sharestring")
 	memory.ssexpand(sharestring or 4096)
 

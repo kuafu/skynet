@@ -7,9 +7,10 @@ local gate
 local agent = {}
 
 function SOCKET.open(fd, addr)
-	skynet.error("New client from : " .. addr)
-	agent[fd] = skynet.newservice("agent")
-	skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
+    skynet.error("+++++++++++++++++++++++++++New client from : " .. addr)
+    agent[fd] = skynet.newservice("agent")
+    skynet.error("watchdog call agent start")
+    skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
 end
 
 local function close_agent(fd)
@@ -41,24 +42,34 @@ function SOCKET.data(fd, msg)
 end
 
 function CMD.start(conf)
-	skynet.call(gate, "lua", "open" , conf)
+    print("<watchdog.CMD.start>")
+    skynet.call(gate, "lua", "open" , conf)
 end
 
 function CMD.close(fd)
 	close_agent(fd)
 end
 
-skynet.start(function()
-	skynet.dispatch("lua", function(session, source, cmd, subcmd, ...)
-		if cmd == "socket" then
-			local f = SOCKET[subcmd]
-			f(...)
-			-- socket api don't need return
-		else
-			local f = assert(CMD[cmd])
-			skynet.ret(skynet.pack(f(subcmd, ...)))
-		end
-	end)
+local dispatch = function(session, source, cmd, subcmd, ...)
+    skynet.error("--- watchdog dispatch ---");
+    skynet.error(string.format("[watchdog] session:%d, source:%s, cmd:%s, subcmd:%s, args:%s",
+    session, skynet.address(source), cmd, subcmd, table.concat({...},", ")    ) )
+    --print("[watchdog]",session, skynet.add(source), skynet.address(source), cmd, subcmd, ...)
+	if cmd == "socket" then
+		local f = SOCKET[subcmd]
+		f(...)
+		-- socket api don't need return
+	else
+		local f = assert(CMD[cmd])
+		skynet.ret(skynet.pack(f(subcmd, ...)))
+	end
+end
 
-	gate = skynet.newservice("gate")
-end)
+local function entry()
+	skynet.dispatch("lua", dispatch)
+    gate = skynet.newservice("gate")
+
+end
+
+skynet.start(entry)
+

@@ -14,12 +14,20 @@ skynet.register_protocol {
 local handler = {}
 
 function handler.open(source, conf)
-	watchdog = conf.watchdog or source
+    watchdog = conf.watchdog or source
+
+    skynet.timeout (1, function ()
+        print ("gate opend")
+        print ("")
+        print (":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+    end)
+
 end
 
 function handler.message(fd, msg, sz)
-	-- recv a package, forward it
-	local c = connection[fd]
+    -- recv a package, forward it
+    skynet.error("<handler.message>")
+    local c = connection[fd]
 	local agent = c.agent
 	if agent then
 		skynet.redirect(agent, c.client, "client", 0, msg, sz)
@@ -29,7 +37,11 @@ function handler.message(fd, msg, sz)
 end
 
 function handler.connect(fd, addr)
-	local c = {
+--    skynet.error("--------------------------------------")
+--    skynet.error(debug.traceback())
+--    skynet.error("--------------------------------------")
+    skynet.error("<gate.handler.connect>")
+    local c = {
 		fd = fd,
 		ip = addr,
 	}
@@ -70,7 +82,8 @@ end
 local CMD = {}
 
 function CMD.forward(source, fd, client, address)
-	local c = assert(connection[fd])
+    skynet.error("<CMD.forward>")
+    local c = assert(connection[fd])
 	unforward(c)
 	c.client = client or 0
 	c.agent = address or source
@@ -79,7 +92,8 @@ function CMD.forward(source, fd, client, address)
 end
 
 function CMD.accept(source, fd)
-	local c = assert(connection[fd])
+    skynet.error("<CMD.accept>")
+    local c = assert(connection[fd])
 	unforward(c)
 	gateserver.openclient(fd)
 end

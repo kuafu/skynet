@@ -1,0 +1,14 @@
+{
+	"folders":
+	[
+		{
+			"path": "lualib"
+		},
+		{
+			"path": "service"
+		},
+		{
+			"path": "examples"
+		}
+	]
+}

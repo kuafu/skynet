@@ -67,7 +67,8 @@ function skynet.forward_type(map, start_func)
 end
 
 function skynet.filter(f ,start_func)
-	c.callback(function(...)
+    skynet.error("<skynet.filter>")
+    c.callback(function(...)
 		dispatch_message(f(...))
 	end)
 	skynet.timeout(0, function()

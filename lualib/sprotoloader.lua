@@ -4,6 +4,9 @@ local sproto = require "sproto"
 
 local loader = {}
 
+--print("lualib/sprotoloader.lua")
+--skynet.error(string.format("Unknown request (%s): %s", prototype, c.tostring(msg,sz)))
+
 function loader.register(filename, index)
 	local f = assert(io.open(filename), "Can't open sproto file")
 	local data = f:read "a"

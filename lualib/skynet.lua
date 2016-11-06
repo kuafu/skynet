@@ -427,6 +427,7 @@ function skynet.wakeup(co)
 end
 
 function skynet.dispatch(typename, func)
+    skynet.error("<skynet.dispatch>", typename, func)
 	local p = proto[typename]
 	if func then
 		local ret = p.dispatch
@@ -469,9 +470,13 @@ function skynet.fork(func,...)
 end
 
 local function raw_dispatch_message(prototype, msg, sz, session, source)
-	-- skynet.PTYPE_RESPONSE = 1, read skynet.h
-	-- print("<raw_dispatch_message>")
-	if prototype == 1 then
+    -- skynet.PTYPE_RESPONSE = 1, read skynet.h
+    --skynet.error(string.format( "<raw_dispatch_message> %s", table.concat({...},"," ) ))
+    if prototype == 6 then
+        skynet.error("<raw_dispatch_message>", prototype, msg, sz, session, source)
+    end
+
+    if prototype == 1 then
 		local co = session_id_coroutine[session]
 		if co == "BREAK" then
 			session_id_coroutine[session] = nil
@@ -508,9 +513,10 @@ local function raw_dispatch_message(prototype, msg, sz, session, source)
 		end
 	end
 end
-
 function skynet.dispatch_message(...)
-	local succ, err = pcall(raw_dispatch_message,...)
+    --skynet.error("<dispatch_message>", ...)
+    --skynet.error(debug.traceback() )
+    local succ, err = pcall(raw_dispatch_message,...)
 	while true do
 		local key,co = next(fork_queue)
 		if co == nil then
@@ -538,7 +544,8 @@ function skynet.newservice(name, ...)
 	    args = table.concat({...},",") or "nil"
     end
 
-	print( "+++ newservice ["..name.."], args:"..args)
+    skynet.error(string.format("+++ newservice >>> [%s] <<<, args: %s", name, table.concat({...}," ") ) )
+    --print( "+++ newservice >>> ["..name.."] <<<, args:"..args)
 	return skynet.call(".launcher", "lua" , "LAUNCH", "snlua", name, ...)
 end
 

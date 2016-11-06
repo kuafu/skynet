@@ -1,6 +1,6 @@
 local skynet = require "skynet"
 local socket = require "socket"
-
+print( "cmaster.lua" )
 --[[
 	master manage data :
 		1. all the slaves address : id -> ipaddr:port
@@ -112,7 +112,9 @@ skynet.start(function()
 	skynet.error("master listen socket " .. tostring(master_addr))
 	local fd = socket.listen(master_addr)
 	socket.start(fd , function(id, addr)
-		skynet.error("connect from " .. addr .. " " .. id)
+	
+	skynet.error("")
+	skynet.error("[cmaster] connect from " .. addr .. " " .. id)
 		socket.start(id)
 		local ok, slave, slave_addr = pcall(handshake, id)
 		if ok then

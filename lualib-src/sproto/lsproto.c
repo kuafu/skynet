@@ -61,7 +61,11 @@ static lua_Integer lua_tointegerx(lua_State *L, int idx, int *isnum) {
 #endif
 
 static int
-lnewproto(lua_State *L) {
+lnewproto(lua_State *L){
+	static int trace_back = 0;
+ 	if(trace_back)
+ 		luaL_dostring(L, "print(debug.traceback() )");
+
 	struct sproto * sp;
 	size_t sz;
 	void * buffer = (void *)luaL_checklstring(L,1,&sz);

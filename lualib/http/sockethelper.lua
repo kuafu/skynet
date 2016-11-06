@@ -31,7 +31,8 @@ function sockethelper.writefunc(fd)
 end
 
 function sockethelper.connect(host, port)
-	local fd = socket.open(host, port)
+    print("<sockethelper.connect>")
+    local fd = socket.open(host, port)
 	if fd then
 		return fd
 	end

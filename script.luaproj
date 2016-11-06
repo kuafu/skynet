@@ -69,6 +69,7 @@
     <Compile Include="lualib\http\sockethelper.lua" />
     <Compile Include="lualib\http\url.lua" />
     <Compile Include="lualib\loader.lua" />
+    <Compile Include="examples\lua_snippet.lua" />
     <Compile Include="lualib\md5.lua" />
     <Compile Include="lualib\mongo.lua" />
     <Compile Include="lualib\mqueue.lua" />

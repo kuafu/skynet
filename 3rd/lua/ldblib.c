@@ -427,6 +427,15 @@ static int db_traceback (lua_State *L) {
   return 1;
 }
 
+static int db_anchor(lua_State *L)
+{
+	printf("---------------------------------------------------\n");
+	int err = luaL_dostring(L, "print(debug.traceback() )");
+	printf("---------------------------------------------------");
+
+	return 0;
+}
+
 
 static const luaL_Reg dblib[] = {
   {"debug", db_debug},
@@ -445,6 +454,7 @@ static const luaL_Reg dblib[] = {
   {"setmetatable", db_setmetatable},
   {"setupvalue", db_setupvalue},
   {"traceback", db_traceback},
+  { "anchor",	db_anchor },
   {NULL, NULL}
 };
 
