@@ -14,11 +14,26 @@ end
 local NORET = {}
 
 function command.LIST()
-	local list = {}
+    local list = {}
 	for k,v in pairs(services) do
 		list[skynet.address(k)] = v
 	end
 	return list
+end
+
+function command.DUMPSNLUA()
+    skynet.error("<command.DUMPSNLUA>")
+--    skynet.dump_snlua()
+    for k,v in pairs(services) do
+        skynet.error(k,skynet.address(k),v)
+        --list[skynet.address(k)] = v
+    end
+    skynet.error("---")
+    --skynet.error(command.LIST())
+end
+
+function command.SERVICENAME(addr)
+    return services[addr]
 end
 
 function command.STAT()

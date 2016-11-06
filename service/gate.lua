@@ -16,11 +16,14 @@ local handler = {}
 function handler.open(source, conf)
     watchdog = conf.watchdog or source
 
-    skynet.timeout (1, function ()
-        print ("gate opend")
-        print ("")
-        print (":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
-    end)
+--    skynet.timeout (1, function ()
+--        print ("gate opend")
+--        print ("")
+--        print (":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+----        skynet.dumpproto()
+----        skynet.dump_snlua()
+----        skynet.call(".launcher", "lua", "DUMPSNLUA")
+--    end)
 
 end
 

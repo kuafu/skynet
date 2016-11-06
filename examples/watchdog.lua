@@ -7,7 +7,7 @@ local gate
 local agent = {}
 
 function SOCKET.open(fd, addr)
-    skynet.error("+++++++++++++++++++++++++++New client from : " .. addr)
+    skynet.error("+++ New client from : " .. addr)
     agent[fd] = skynet.newservice("agent")
     skynet.error("watchdog call agent start")
     skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
@@ -69,7 +69,14 @@ local function entry()
 	skynet.dispatch("lua", dispatch)
     gate = skynet.newservice("gate")
 
+    --debug only
+    skynet.timeout (1, function ()
+        skynet.error(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+        skynet.error("watchdog running...")
+        skynet.call(".launcher", "lua", "DUMPSNLUA")
+    end)
 end
 
+--skynet.error("watchdog entry:", entry)
 skynet.start(entry)
 

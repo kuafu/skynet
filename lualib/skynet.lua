@@ -6,6 +6,8 @@ local assert = assert
 local pairs = pairs
 local pcall = pcall
 
+local print_r = require( "print_r" )
+
 local profile = require "profile"
 
 local coroutine_resume = profile.resume
@@ -28,16 +30,35 @@ local skynet = {
 	PTYPE_SNAX = 11,
 }
 
+--服务的entry function 地址映射到服务的地址
+local entry_fun={}
 -- code cache
 skynet.cache = require "skynet.codecache"
 
 function skynet.register_protocol(class)
-	local name = class.name
+    --skynet.error("register_protocol", table.concat(class, ",") )
+    --print("register_protocol", skynet.address(skynet.self()) )
+    --print_r(class)
+    local name = class.name
 	local id = class.id
 	assert(proto[name] == nil)
 	assert(type(name) == "string" and type(id) == "number" and id >=0 and id <=255)
 	proto[name] = class
 	proto[id] = class
+end
+
+function skynet.dumpproto()
+    local name = skynet.call(".launcher", "lua", "SERVICENAME", skynet.self() )
+    skynet.error("<skynet.dumpproto>", name, skynet.self() )
+    for k, v in pairs( proto ) do
+        if type(k)=="string" then
+            skynet.error("\t", k, v.id )
+--            for k, v in pairs( v ) do
+--                skynet.error("\t\t+--",k,v)
+--            end
+        end
+    end
+
 end
 
 local session_id_coroutine = {}
@@ -427,7 +448,7 @@ function skynet.wakeup(co)
 end
 
 function skynet.dispatch(typename, func)
-    skynet.error("<skynet.dispatch>", typename, func)
+--    skynet.error("<skynet.dispatch>", typename, func)
 	local p = proto[typename]
 	if func then
 		local ret = p.dispatch
@@ -496,8 +517,9 @@ local function raw_dispatch_message(prototype, msg, sz, session, source)
 			end
 			return
 		end
-		local f = p.dispatch
-		if f then
+        local f = p.dispatch
+        --skynet.error("call dispatch function ", f, p.dispatch, entry_fun[f])
+        if f then
 			local ref = watching_service[source]
 			if ref then
 				watching_service[source] = ref + 1
@@ -653,19 +675,18 @@ function skynet.pcall(start)
 end
 
 function skynet.init_service(start)
-	--print("<skynet.init_service>")
+    entry_fun[start] = skynet.address(skynet.self())
+    --skynet.error("--------------------<skynet.init_service>", skynet.self(), start)
 	local ok, err = skynet.pcall(start)
-	--print("<skynet.init_service> --->1")
 	if not ok then
 		skynet.error("init service failed: " .. tostring(err))
 		skynet.send(".launcher","lua", "ERROR")
 		skynet.exit()
 	else
-		--print("<skynet.init_service> --->2")
 		skynet.send(".launcher","lua", "LAUNCHOK")
-		--print("<skynet.init_service> --->3")
 	end
-	--print("</skynet.init_service>")
+
+    skynet.dumpproto()
 end
 
 function skynet.start(start_func)
