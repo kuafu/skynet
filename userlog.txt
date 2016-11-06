@@ -1,0 +1,159 @@
+[:01000001] 
+[:01000001] LAUNCH logger userlog.txt
+[:01000002] 
+[:01000002] LAUNCH snlua bootstrap
+[:01000003] 
+[:01000003] LAUNCH snlua launcher
+[:01000002] +++ newservice >>> [cmaster] <<<, args: 
+[:01000004] 
+[:01000004] LAUNCH snlua cmaster
+[:01000004] master listen socket 0.0.0.0:2013
+[:01000004] <raw_dispatch_message> 6 userdata: 00896D58 21 0 0
+[:01000002] +++ newservice >>> [cslave] <<<, args: 
+[:01000004] <skynet.dumpproto> snlua cmaster 16777220
+[:01000004] 	 socket 6
+[:01000004] 	 lua 10
+[:01000004] 	 response 1
+[:01000004] 	 debug 9
+[:01000004] 	 error 7
+[:01000003] <skynet.dumpproto> nil 16777219
+[:01000003] 	 debug 9
+[:01000003] 	 text 0
+[:01000003] 	 response 1
+[:01000003] 	 lua 10
+[:01000003] 	 error 7
+[:01000005] 
+[:01000005] LAUNCH snlua cslave
+[:01000005] slave connect to master 127.0.0.1:2013
+[:01000004] <raw_dispatch_message> 6 userdata: 024A5DD8 31 0 0
+[:01000004] 
+[:01000004] [cmaster] connect from 127.0.0.1:23327 4
+[:01000005] <raw_dispatch_message> 6 userdata: 0249F800 25 0 0
+[:01000006] 
+[:01000006] LAUNCH harbor 1 16777221
+[:01000004] <raw_dispatch_message> 6 userdata: 0249F890 21 0 0
+[:01000004] <raw_dispatch_message> 6 userdata: 024A1708 16 0 0
+[:01000004] Harbor 1 (fd=4) report 127.0.0.1:2526
+[:01000005] <raw_dispatch_message> 6 userdata: 024A18C8 16 0 0
+[:01000005] Waiting for 0 harbors
+[:01000005] Shakehand ready
+[:01000002] +++ newservice >>> [datacenterd] <<<, args: 
+[:01000005] <skynet.dumpproto> snlua cslave 16777221
+[:01000005] 	 socket 6
+[:01000005] 	 lua 10
+[:01000005] 	 response 1
+[:01000005] 	 text 0
+[:01000005] 	 harbor 5
+[:01000005] 	 debug 9
+[:01000005] 	 error 7
+[:01000007] 
+[:01000007] LAUNCH snlua datacenterd
+[:01000002] +++ newservice >>> [service_mgr] <<<, args: 
+[:01000007] <skynet.dumpproto> snlua datacenterd 16777223
+[:01000007] 	 debug 9
+[:01000007] 	 lua 10
+[:01000007] 	 error 7
+[:01000007] 	 response 1
+[:01000008] 
+[:01000008] LAUNCH snlua service_mgr
+[:01000004] <raw_dispatch_message> 6 userdata: 024B7BA8 16 0 0
+[:01000005] <raw_dispatch_message> 6 userdata: 024B7B68 16 0 0
+[:01000002] +++ newservice >>> [main] <<<, args: 
+[:01000004] <raw_dispatch_message> 6 userdata: 024F17C0 16 0 0
+[:01000008] <skynet.dumpproto> snlua service_mgr 16777224
+[:01000008] 	 lua 10
+[:01000008] 	 snax 11
+[:01000008] 	 response 1
+[:01000008] 	 debug 9
+[:01000008] 	 error 7
+[:01000009] 
+[:01000009] LAUNCH snlua main
+[:01000005] <raw_dispatch_message> 6 userdata: 024F1900 16 0 0
+[:01000009] Server start
+[:01000009] ---------------->3
+[:01000008] +++ newservice >>> [protoloader] <<<, args: 
+[:01000004] <raw_dispatch_message> 6 userdata: 02556658 16 0 0
+[:0100000a] 
+[:0100000a] LAUNCH snlua protoloader
+[:01000005] <raw_dispatch_message> 6 userdata: 02556598 16 0 0
+[:01000009] +++ newservice >>> [watchdog] <<<, args: 
+[:0100000a] <skynet.dumpproto> snlua protoloader 16777226
+[:0100000a] 	 debug 9
+[:0100000a] 	 lua 10
+[:0100000a] 	 error 7
+[:0100000a] 	 response 1
+[:0100000b] 
+[:0100000b] LAUNCH snlua watchdog
+[:0100000b] +++ newservice >>> [gate] <<<, args: 
+[:0100000c] 
+[:0100000c] LAUNCH snlua gate
+[:0100000c] set gateserver lua dispatch func
+[:0100000c] <skynet.dumpproto> snlua gate 16777228
+[:0100000c] 	 socket 6
+[:0100000c] 	 debug 9
+[:0100000c] 	 response 1
+[:0100000c] 	 lua 10
+[:0100000c] 	 client 3
+[:0100000c] 	 error 7
+[:01000009] ---------------->5
+[:0100000b] --- watchdog dispatch ---
+[:0100000b] [watchdog] session:4, source::01000009, cmd:start, subcmd:table: 02F547A0, args:
+[:0100000c] [gateserver] lua message:address::0100000b, CMD:open
+[:0100000c] >>> Listen on 0.0.0.0:8888
+[:0100000b] <skynet.dumpproto> snlua watchdog 16777227
+[:0100000b] 	 debug 9
+[:0100000b] 	 lua 10
+[:0100000b] 	 error 7
+[:0100000b] 	 response 1
+[:0100000c] <raw_dispatch_message> 6 userdata: 02F498B8 21 0 0
+[:0100000c] ----------------------------------------------------------
+[:0100000c] gateserver...socket dispatcher, type:
+[:0100000c] 	
+[:01000009] KILL self
+[:01000002] KILL self
+[:0100000b] :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+[:0100000b] watchdog running...
+[:01000003] <command.DUMPSNLUA>
+[:01000003] 16777224 :01000008 snlua service_mgr
+[:01000003] 16777226 :0100000a snlua protoloader
+[:01000003] 16777227 :0100000b snlua watchdog
+[:01000003] 16777228 :0100000c snlua gate
+[:01000003] 16777221 :01000005 snlua cslave
+[:01000003] 16777220 :01000004 snlua cmaster
+[:01000003] 16777223 :01000007 snlua datacenterd
+[:01000003] ---
+[:0100000c] <raw_dispatch_message> 6 userdata: 02F55240 31 0 0
+[:0100000c] ----------------------------------------------------------
+[:0100000c] gateserver...socket dispatcher, type: open
+[:0100000c] 	 6 127.0.0.1:23329
+[:0100000c] [gateserver] socket type:open
+[:0100000c] <MSG.open>
+[:0100000c] <gate.handler.connect>
+[:0100000b] --- watchdog dispatch ---
+[:0100000b] [watchdog] session:0, source::0100000c, cmd:socket, subcmd:open, args:6, 127.0.0.1:23329
+[:0100000b] +++ New client from : 127.0.0.1:23329
+[:0100000b] +++ newservice >>> [agent] <<<, args: 
+[:0100000d] 
+[:0100000d] LAUNCH snlua agent
+[:0100000b] watchdog call agent start
+[:0100000c] [gateserver] lua message:address::0100000d, CMD:forward
+[:0100000c] <CMD.forward>
+[:0100000d] <skynet.dumpproto> snlua agent 16777229
+[:0100000d] 	 socket 6
+[:0100000d] 	 lua 10
+[:0100000d] 	 response 1
+[:0100000d] 	 debug 9
+[:0100000d] 	 client 3
+[:0100000d] 	 error 7
+[:0100000c] <raw_dispatch_message> 6 userdata: 024F9188 21 0 0
+[:0100000c] ----------------------------------------------------------
+[:0100000c] gateserver...socket dispatcher, type:
+[:0100000c] 	
+[:0100000c] <raw_dispatch_message> 6 userdata: 00832B88 16 0 0
+[:0100000c] ----------------------------------------------------------
+[:0100000c] gateserver...socket dispatcher, type: more
+[:0100000c] 	
+[:0100000c] [gateserver] socket type:more
+[:0100000c] <handler.message>
+[:0100000c] <handler.message>
+[:01000004] <raw_dispatch_message> 6 userdata: 008440A8 16 0 0
