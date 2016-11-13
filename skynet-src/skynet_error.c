@@ -20,14 +20,19 @@ skynet_error(struct skynet_context * context, const char *msg, ...) {
 		return;
 	}
 
-	char tmp[LOG_MESSAGE_SIZE];
+	// msg text
+	char tmp1[LOG_MESSAGE_SIZE];
 	char *data = NULL;
 
 	va_list ap;
-
 	va_start(ap,msg);
-	int len = vsnprintf(tmp, LOG_MESSAGE_SIZE, msg, ap);
+	int len = vsnprintf(tmp1, LOG_MESSAGE_SIZE, msg, ap);
 	va_end(ap);
+
+	//mod name
+	char tmp[LOG_MESSAGE_SIZE];
+	len = snprintf(tmp, LOG_MESSAGE_SIZE, "%s| %s", skynet_mod_name(context), tmp1);
+
 	if (len >=0 && len < LOG_MESSAGE_SIZE) {
 		data = skynet_strdup(tmp);
 	} else {

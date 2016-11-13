@@ -796,3 +796,8 @@ skynet_initthread(int m) {
 	pthread_setspecific(G_NODE.handle_key, (void *)v);
 }
 
+const char* skynet_mod_name(struct skynet_context * ctx)
+{
+	return ctx->mod->name;
+}
+

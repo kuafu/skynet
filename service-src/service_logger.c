@@ -30,11 +30,15 @@ logger_release(struct logger * inst) {
 	skynet_free(inst);
 }
 
-static int
-_logger(struct skynet_context * context, void *ud, int type, int session, uint32_t source, const void * msg, size_t sz) {
+
+static int _logger(struct skynet_context * context, void *ud, int type, int session, 
+	uint32_t source, const void * msg, size_t sz) 
+{
+	//struct skynet_module *mod = context->mod;
+
 	struct logger * inst = ud;
 #ifdef _MSC_VER
-	fwprintf(inst->handle, L"[:%08x] ",source);
+	fwprintf(inst->handle, L"[:%08x ", source);
 	int wlen = MultiByteToWideChar(CP_UTF8,0,msg,sz,NULL,0);
 	wchar_t *wbuf = (wchar_t*)malloc((sz+1)*sizeof(wchar_t));
 	MultiByteToWideChar(CP_UTF8,0,msg,sz,wbuf,wlen);

@@ -26,4 +26,5 @@ void skynet_globalinit(void);
 void skynet_globalexit(void);
 void skynet_initthread(int m);
 
+const char* skynet_mod_name(struct skynet_context *);
 #endif
