@@ -165,7 +165,7 @@ skynet.register_protocol {
 }
 
 local function connect(id, func)
-	print("<socket.connect>")
+	skynet.error("<socket.connect>", "id:", id, ", func:", tostring( func ) )
 	local newbuffer
 	if func == nil then
 		newbuffer = driver.buffer()
@@ -194,7 +194,7 @@ local function connect(id, func)
 end
 
 function socket.open(addr, port)
-    print("<socket.open>",addr,port)
+    --skynet.error(string.format("----------------<socket.open> %s", (port) ) )
     local id = driver.connect(addr,port)
 	return connect(id)
 end

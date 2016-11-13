@@ -1,6 +1,6 @@
 local skynet = require "skynet"
 local socket = require "socket"
-print( "cmaster.lua" )
+--print( "cmaster.lua" )
 --[[
 	master manage data :
 		1. all the slaves address : id -> ipaddr:port

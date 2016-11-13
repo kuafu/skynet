@@ -21,6 +21,9 @@ local c = require "skynet.core"
 
 
 function skynet.launch(...)
+    --skynet.error("<skynet.launch>",...)
+    --skynet.error("---")
+
     local addr = c.command("LAUNCH", table.concat({...}," "))
 --    snlua_name(addr, ...)
     if addr then

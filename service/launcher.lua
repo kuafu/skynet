@@ -97,6 +97,8 @@ local function launch_service(service, ...)
 end
 
 function command.LAUNCH(_, service, ...)
+	--skynet.error("command.LAUNCH",debug.traceback())
+
 	launch_service(service, ...)
 	return NORET
 end
