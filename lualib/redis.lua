@@ -63,13 +63,15 @@ redcmd[42] = function(fd, data)	-- '*'
 	return noerr, bulk
 end
 
--------------------
-
+-----只是返回login的闭包，闭包........
 local function redis_login(auth, db)
-    print("redis_login", auth, db)
+    skynet.error("<redis_login> auth:", auth, ", db:", db)
 	if auth == nil and db == nil then
+		skynet.error("  Login Error!")
 		return
 	end
+
+	skynet.error("1----------")
 	return function(so)
 		if auth then
 			so:request("AUTH "..auth.."\r\n", read_response)
@@ -81,7 +83,7 @@ local function redis_login(auth, db)
 end
 
 function redis.connect(db_conf)
-    print("redis.connect", db_conf)
+	skynet.error("<redis.connect> auth:", db_conf.auth, ", db:", db_conf.db)
 
 	local channel = socketchannel.channel {
 		host = db_conf.host,
@@ -90,12 +92,15 @@ function redis.connect(db_conf)
 		nodelay = true,
 	}
 	-- try connect first only once
+	skynet.error("2----------")
+
 	channel:connect(true)
+	skynet.error("3----------")
 	return setmetatable( { channel }, meta )
 end
 
 function command:disconnect()
-    print("redis.disconnect")
+	skynet.error("redis.disconnect")
 
 	self[1]:close()
 	setmetatable(self, nil)
