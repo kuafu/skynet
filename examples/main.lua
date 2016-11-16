@@ -1,32 +1,26 @@
-local skynet = require "skynet"
-local sprotoloader = require "sprotoloader"
+print("--- main 1 ---")
+local skynet       = require "skynet"
 
-sprotoloader = require "sprotoloader"
-local max_client = 64
+local config       = require "config.system"
+local login_config = require "config.loginserver"
+local game_config  = require "config.gameserver"
 
+skynet.start(function()
 
-require "skynet.manager"	-- import skynet.register
+	skynet.newservice("debug_console", config.debug_port)
+	skynet.newservice("protod")
+    print("starting database...")
+	skynet.uniqueservice("database")
 
-local function entry()
-	skynet.error("::: main service start")
+    print("")
+    print("starting loginserver...")
+	local loginserver = skynet.newservice("loginserver")
+	skynet.call(loginserver, "lua", "open", login_config)	
+    print("finishing loginserver")
 
-	skynet.error("  self:", skynet.self(), skynet.address(skynet.self()) )
+	local gamed = skynet.newservice("gamed", loginserver)
+	skynet.call(gamed, "lua", "open", game_config)
 
+    skynet.error("::::::::::::::::::::::: Server Ready :::::::::::::::::::::::")
+end)
 
-	skynet.uniqueservice("protoloader")
-    --local console = skynet.newservice("console")
-    --skynet.newservice("debug_console",8000)
-    --assert(false)
-    --skynet.newservice("simpledb")
-
-    local watchdog = skynet.newservice ("watchdog")
-    skynet.call(watchdog, "lua", "start", {	port = 8888, maxclient = max_client,	nodelay = true,} )
-	skynet.error("Watchdog listen on ", 8888)
-
-	skynet.error("::: main service end")
-    skynet.exit ()
-
-end
-
-
-skynet.start(entry)

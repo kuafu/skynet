@@ -39,10 +39,9 @@ end
 
 local function connect_slave(slave_id, address)
 	local ok, err = pcall(function()
-        if slaves[slave_id] == nil then
-            skynet.error("<connect_slave>")
-            local fd = assert(socket.open(address), "Can't connect to "..address)
-			skynet.error(string.format("Connect to harbor %d (fd=%d), %s", slave_id, fd, address))
+		if slaves[slave_id] == nil then
+			local fd = assert(socket.open(address), "Can't connect to "..address)
+			skynet.error(string.format("Connect to harbor %d(fd=%d), %s", slave_id, fd, address))
 			slaves[slave_id] = fd
 			monitor_clear(slave_id)
 			socket.abandon(fd)
@@ -115,20 +114,20 @@ local function accept_slave(fd)
 	socket.start(fd)
 	local id = socket.read(fd, 1)
 	if not id then
-		skynet.error(string.format("Connection (fd =%d) closed", fd))
+		skynet.error(string.format("Connection(fd =%d) closed", fd))
 		socket.close(fd)
 		return
 	end
 	id = string.byte(id)
 	if slaves[id] ~= nil then
-		skynet.error(string.format("Slave %d exist (fd =%d)", id, fd))
+		skynet.error(string.format("Slave %d exist(fd =%d)", id, fd))
 		socket.close(fd)
 		return
 	end
 	slaves[id] = fd
 	monitor_clear(id)
 	socket.abandon(fd)
-	skynet.error(string.format("Harbor %d connected (fd = %d)", id, fd))
+	skynet.error(string.format("Harbor %d connected(fd = %d)", id, fd))
 	skynet.send(harbor_service, "harbor", string.format("A %d %d", fd, id))
 end
 
@@ -224,6 +223,9 @@ function harbor.QUERYNAME(fd, name)
 end
 
 skynet.start(function()
+    print("")
+    print("cslave-skynet.start")
+    print("skynet:",skynet)
 	local master_addr = skynet.getenv "master"
 	local harbor_id = tonumber(skynet.getenv "harbor")
 	local slave_address = assert(skynet.getenv "address")
@@ -231,7 +233,7 @@ skynet.start(function()
 	skynet.error("slave connect to master " .. tostring(master_addr))
 	local master_fd = assert(socket.open(master_addr), "Can't connect to master")
 
-	skynet.dispatch("lua", function (_,_,command,...)
+	skynet.dispatch("lua", function(_,_,command,...)
 		local f = assert(harbor[command])
 		f(master_fd, ...)
 	end)
@@ -248,7 +250,7 @@ skynet.start(function()
 	if n > 0 then
 		local co = coroutine.running()
 		socket.start(slave_fd, function(fd, addr)
-			skynet.error(string.format("New connection (fd = %d, %s)",fd, addr))
+			skynet.error(string.format("New connection(fd = %d, %s)",fd, addr))
 			if pcall(accept_slave,fd) then
 				local s = 0
 				for k,v in pairs(slaves) do

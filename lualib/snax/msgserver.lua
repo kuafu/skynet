@@ -13,7 +13,7 @@ Protocol:
 
 	All the number type is big-endian
 
-	Shakehands (The first package)
+	Shakehands(The first package)
 
 	Client -> Server :
 
@@ -31,14 +31,14 @@ Protocol:
 	Req-Resp
 
 	Client -> Server : Request
-		word size (Not include self)
-		string content (size-4)
+		word size(Not include self)
+		string content(size-4)
 		dword session
 
 	Server -> Client : Response
-		word size (Not include self)
-		string content (size-5)
-		byte ok (1 is ok, 0 is error)
+		word size(Not include self)
+		string content(size-5)
+		byte ok(1 is ok, 0 is error)
 		dword session
 
 API:
@@ -61,18 +61,18 @@ API:
 		start server
 
 Supported skynet command:
-	kick username (may used by loginserver)
-	login username secret  (used by loginserver)
-	logout username (used by agent)
+	kick username(may used by loginserver)
+	login username secret (used by loginserver)
+	logout username(used by agent)
 
 Config for server.start:
-	conf.expired_number : the number of the response message cached after sending out (default is 128)
-	conf.login_handler(uid, secret) -> subid : the function when a new user login, alloc a subid for it. (may call by login server)
-	conf.logout_handler(uid, subid) : the functon when a user logout. (may call by agent)
-	conf.kick_handler(uid, subid) : the functon when a user logout. (may call by login server)
+	conf.expired_number : the number of the response message cached after sending out(default is 128)
+	conf.login_handler(uid, secret) -> subid : the function when a new user login, alloc a subid for it.(may call by login server)
+	conf.logout_handler(uid, subid) : the functon when a user logout.(may call by agent)
+	conf.kick_handler(uid, subid) : the functon when a user logout.(may call by login server)
 	conf.request_handler(username, session, msg) : the function when recv a new request.
 	conf.register_handler(servername) : call when gate open
-	conf.disconnect_handler(username) : call when a connection disconnect (afk)
+	conf.disconnect_handler(username) : call when a connection disconnect(afk)
 ]]
 
 local server = {}
@@ -139,9 +139,8 @@ function server.start(conf)
 		return f(...)
 	end
 
-    function handler.open(source, gateconf)
-        skynet.error("<handler.open>")
-        local servername = assert(gateconf.servername)
+	function handler.open(source, gateconf)
+		local servername = assert(gateconf.servername)
 		return conf.register_handler(servername)
 	end
 
@@ -282,7 +281,7 @@ function server.start(conf)
 			end
 		end
 		u.index = u.index + 1
-		-- the return fd is p[1] (fd may change by multi request) check connect
+		-- the return fd is p[1](fd may change by multi request) check connect
 		fd = p[1]
 		if connection[fd] then
 			socketdriver.send(fd, p[2])

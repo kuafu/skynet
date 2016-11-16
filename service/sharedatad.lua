@@ -59,7 +59,7 @@ function CMD.new(name, t)
 	elseif dt == "nil" then
 		value = {}
 	else
-		error ("Unknown data type " .. dt)
+		error("Unknown data type " .. dt)
 	end
 	newobj(name, value)
 end
@@ -142,7 +142,7 @@ end
 
 skynet.start(function()
 	skynet.fork(collectobj)
-	skynet.dispatch("lua", function (session, source ,cmd, ...)
+	skynet.dispatch("lua", function(session, source ,cmd, ...)
 		local f = assert(CMD[cmd])
 		local r = f(...)
 		if r ~= NORET then

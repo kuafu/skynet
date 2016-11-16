@@ -7,7 +7,7 @@ local node, address = ...
 skynet.register_protocol {
 	name = "system",
 	id = skynet.PTYPE_SYSTEM,
-	unpack = function (...) return ... end,
+	unpack = function(...) return ... end,
 }
 
 local forward_map = {
@@ -22,7 +22,7 @@ skynet.forward_type( forward_map ,function()
 	if n then
 		address = n
 	end
-	skynet.dispatch("system", function (session, source, msg, sz)
+	skynet.dispatch("system", function(session, source, msg, sz)
 		skynet.ret(skynet.rawcall(clusterd, "lua", skynet.pack("req", node, address, msg, sz)))
 	end)
 end)

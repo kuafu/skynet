@@ -69,7 +69,7 @@ skynet.start(function()
 	local harbor_id = tonumber(skynet.getenv "harbor")
 	assert(harbor_id == 0)
 
-	skynet.dispatch("lua", function (session,source,command,...)
+	skynet.dispatch("lua", function(session,source,command,...)
 		local f = assert(harbor[command])
 		f(...)
 	end)

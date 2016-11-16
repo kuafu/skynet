@@ -1,8 +1,8 @@
--- Copyright (C) 2012 Yichun Zhang (agentzh)
--- Copyright (C) 2014 Chang Feng
+-- Copyright(C) 2012 Yichun Zhang(agentzh)
+-- Copyright(C) 2014 Chang Feng
 -- This file is modified version from https://github.com/openresty/lua-resty-mysql
 -- The license is under the BSD license.
--- Modified by Cloud Wu (remove bit32 for lua 5.3)
+-- Modified by Cloud Wu(remove bit32 for lua 5.3)
 
 local socketchannel = require "socketchannel"
 local mysqlaux = require "mysqlaux.c"
@@ -21,7 +21,7 @@ local sha1= crypt.sha1
 local setmetatable = setmetatable
 local error = error
 local tonumber = tonumber
-local    new_tab = function (narr, nrec) return {} end
+local    new_tab = function(narr, nrec) return {} end
 
 
 local _M = { _VERSION = '0.13' }
@@ -124,6 +124,19 @@ local function _compose_packet(self, req, size)
     local packet = _set_byte3(size) .. strchar(self.packet_no) .. req
     return packet
 end
+
+
+local function _send_packet(self, req, size)
+    local sock = self.sock
+
+    self.packet_no = self.packet_no + 1
+
+
+    local packet = _set_byte3(size) .. strchar(self.packet_no) .. req
+
+    return socket.write(self.sock,packet)
+end
+
 
 local function _recv_packet(self,sock)
 
@@ -374,7 +387,7 @@ end
 local function _recv_decode_packet_resp(self)
      return function(sock)
 		-- don't return more than 2 results
-        return true, (_recv_packet(self,sock))
+        return true,(_recv_packet(self,sock))
     end
 end
 
@@ -383,7 +396,7 @@ local function _recv_auth_resp(self)
         local packet, typ, err = _recv_packet(self,sock)
         if not packet then
             --print("recv auth resp : failed to receive the result packet")
-            error ("failed to receive the result packet"..err)
+            error("failed to receive the result packet"..err)
             --return nil,err
         end
 
@@ -546,7 +559,7 @@ local function read_result(self, sock)
     end
 
     if typ ~= 'EOF' then
-        --error ( "unexpected packet type " .. typ .. " while eof packet is ".. "expected" )
+        --error( "unexpected packet type " .. typ .. " while eof packet is ".. "expected" )
         return nil, "unexpected packet type " .. typ .. " while eof packet is ".. "expected"
     end
 
@@ -559,7 +572,7 @@ local function read_result(self, sock)
     while true do
         packet, typ, err = _recv_packet(self, sock)
         if not packet then
-            --error (err)
+            --error(err)
             return nil, err
         end
 

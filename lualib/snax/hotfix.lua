@@ -56,7 +56,7 @@ local function collect_all_uv(funcs)
 end
 
 local function loader(source)
-	return function (filename, ...)
+	return function(filename, ...)
 		return load(source, "=patch", ...)
 	end
 end
@@ -107,6 +107,6 @@ local function inject(funcs, source, ...)
 	end
 end
 
-return function (funcs, source, ...)
+return function(funcs, source, ...)
 	return pcall(inject, funcs, source, ...)
 end

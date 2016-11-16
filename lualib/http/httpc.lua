@@ -1,7 +1,6 @@
 local socket = require "http.sockethelper"
 local url = require "http.url"
 local internal = require "http.internal"
-local dns = require "dns"
 local string = string
 local table = table
 
@@ -53,7 +52,7 @@ local function request(fd, method, host, url, recvheader, header, content)
 	local mode = header["transfer-encoding"]
 	if mode then
 		if mode ~= "identity" and mode ~= "chunked" then
-			error ("Unsupport transfer-encoding")
+			error("Unsupport transfer-encoding")
 		end
 	end
 
@@ -72,19 +71,11 @@ local function request(fd, method, host, url, recvheader, header, content)
 				body = body .. padding
 			end
 		else
-			-- no content-length, read all
-			body = body .. socket.readall(fd)
+			body = nil
 		end
 	end
 
 	return code, body
-end
-
-local async_dns
-
-function httpc.dns(server,port)
-	async_dns = true
-	dns.server(server,port)
 end
 
 function httpc.request(method, host, url, recvheader, header, content)
@@ -93,9 +84,6 @@ function httpc.request(method, host, url, recvheader, header, content)
 		port = 80
 	else
 		port = tonumber(port)
-	end
-	if async_dns and not hostname:match(".*%d+$") then
-		hostname = dns.resolve(hostname)
 	end
 	local fd = socket.connect(hostname, port)
 	local ok , statuscode, body = pcall(request, fd,method, host, url, recvheader, header, content)
@@ -112,7 +100,7 @@ function httpc.get(...)
 end
 
 local function escape(s)
-	return (string.gsub(s, "([^A-Za-z0-9_])", function(c)
+	return(string.gsub(s, "([^A-Za-z0-9_])", function(c)
 		return string.format("%%%02X", string.byte(c))
 	end))
 end

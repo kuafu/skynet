@@ -1,11 +1,16 @@
-local skynet = require "skynet"
+local skynet    = require "skynet"
+--print("<file:debug_console>")
+--print("[skynet]",skynet)
+
+
 local codecache = require "skynet.codecache"
-local core = require "skynet.core"
-local socket = require "socket"
-local snax = require "snax"
-local memory = require "memory"
+local core      = require "skynet.core"
+local socket    = require "socket"
+local snax      = require "snax"
+local memory    = require "memory"
 
 local port = tonumber(...)
+
 local COMMAND = {}
 
 local function format_table(t)
@@ -23,9 +28,9 @@ end
 
 local function dump_line(print, key, value)
 	if type(value) == "table" then
-		print(key, format_table(value))
+		print(key, format_table(value), "\r\n" )
 	else
-		print(key,tostring(value))
+		print(key,tostring(value), "\r\n" )
 	end
 end
 
@@ -39,6 +44,8 @@ local function dump_list(print, list)
 		dump_line(print, v, list[v])
 	end
 	print("OK")
+    print("\r\n")
+
 end
 
 local function split_cmdline(cmdline)
@@ -57,6 +64,7 @@ local function docmd(cmdline, print, fd)
 	end
 	local cmd = COMMAND[command]
 	local ok, list
+    print("args:", select(2,table.unpack(split)) )
 	if cmd then
 		ok, list = pcall(cmd, select(2,table.unpack(split)))
 	else
@@ -72,9 +80,11 @@ local function docmd(cmdline, print, fd)
 			end
 		else
 			print("OK")
+		    print("\r\n")
 		end
 	else
-		print("Error:", list)
+		print("Error. List:", list)
+		print("\r\n")
 	end
 end
 
@@ -84,6 +94,7 @@ local function console_main_loop(stdin, print)
 	while true do
 		local cmdline = socket.readline(stdin, "\n")
 		if not cmdline then
+            print("console_main_loop...")
 			break
 		end
 		if cmdline ~= "" then
@@ -94,8 +105,13 @@ local function console_main_loop(stdin, print)
 end
 
 skynet.start(function()
-	local listen_socket = socket.listen ("127.0.0.1", port)
-	skynet.error("Start debug console at 127.0.0.1 " .. port)
+--    print("")
+--    print("debug_console-skynet.start")
+--    print("skynet:",skynet)
+
+    print("[start service] debug_console")
+	local listen_socket = socket.listen("127.0.0.1", port)
+	skynet.error("[debug_console] Start debug console at 127.0.0.1 " .. port)
 	socket.start(listen_socket , function(id, addr)
 		local function print(...)
 			local t = { ... }
@@ -103,7 +119,7 @@ skynet.start(function()
 				t[k] = tostring(v)
 			end
 			socket.write(id, table.concat(t,"\t"))
-			socket.write(id, "\n")
+			socket.write(id, "\r\n")
 		end
 		socket.start(id)
 		skynet.fork(console_main_loop, id , print)
@@ -174,7 +190,7 @@ end
 
 local function adjust_address(address)
 	if address:sub(1,1) ~= ":" then
-		address = assert(tonumber("0x" .. address), "Need an address") | (skynet.harbor(skynet.self()) << 24)
+		address = assert(tonumber("0x" .. address), "Need an address") |(skynet.harbor(skynet.self()) << 24)
 	end
 	return address
 end
@@ -231,7 +247,7 @@ function COMMAND.debug(address, fd)
 	skynet.fork(function()
 		repeat
 			local cmdline = socket.readline(fd, "\n")
-			cmdline = cmdline and cmdline:gsub("(.*)\r$", "%1")
+            cmdline = cmdline:gsub("(.*)\r$", "%1")
 			if not cmdline then
 				skynet.send(agent, "lua", "cmd", "cont")
 				break
@@ -275,3 +291,5 @@ function COMMAND.shrtbl()
 	local n, total, longest, space = memory.ssinfo()
 	return { n = n, total = total, longest = longest, space = space }
 end
+
+

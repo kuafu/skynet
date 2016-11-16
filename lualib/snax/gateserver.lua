@@ -1,6 +1,10 @@
 local skynet = require "skynet"
+print("<file:gateserver>")
+--print("[skynet]",skynet)
+
 local netpack = require "netpack"
 local socketdriver = require "socketdriver"
+
 
 local gateserver = {}
 
@@ -33,11 +37,13 @@ function gateserver.start(handler)
 
 	function CMD.open( source, conf )
 		assert(not socket)
+
 		local address = conf.address or "0.0.0.0"
-		local port = assert(conf.port)
-		maxclient = conf.maxclient or 1024
-		nodelay = conf.nodelay
-		skynet.error(string.format(">>> Listen on %s:%d", address, port))
+		local port    = assert(conf.port)
+		maxclient     = conf.maxclient or 1024
+		nodelay       = conf.nodelay
+		skynet.error(string.format("Listen on %s:%d", address, port))
+
 		socket = socketdriver.listen(address, port)
 		socketdriver.start(socket)
 		if handler.open then
@@ -56,7 +62,7 @@ function gateserver.start(handler)
 		if connection[fd] then
 			handler.message(fd, msg, sz)
 		else
-			skynet.error(string.format("Drop message from fd (%d) : %s", fd, netpack.tostring(msg,sz)))
+			skynet.error(string.format("Drop message from fd(%d) : %s", fd, netpack.tostring(msg,sz)))
 		end
 	end
 
@@ -78,9 +84,8 @@ function gateserver.start(handler)
 
 	MSG.more = dispatch_queue
 
-    function MSG.open(fd, msg)
-        skynet.error("<MSG.open>")
-        if client_number >= maxclient then
+	function MSG.open(fd, msg)
+		if client_number >= maxclient then
 			socketdriver.close(fd)
 			return
 		end
@@ -132,32 +137,21 @@ function gateserver.start(handler)
 	skynet.register_protocol {
 		name = "socket",
 		id = skynet.PTYPE_SOCKET,	-- PTYPE_SOCKET = 6
-		unpack = function ( msg, sz )
+		unpack = function( msg, sz )
 			return netpack.filter( queue, msg, sz)
 		end,
-        dispatch = function (_, _, q, type, ...)
-            --debug.anchor()
-            skynet.error("----------------------------------------------------------")
-            skynet.error("gateserver...socket dispatcher, type:", type)
-            skynet.error("\t",... )
-            --skynet.error("\t", skynet.tostring(dispatch) )
-            
-            queue = q
+		dispatch = function(_, _, q, type, ...)
+			queue = q
 			if type then
-                skynet.error(string.format("[gateserver] socket type:%s",type ) )
-                MSG[type](...)
+				MSG[type](...)
 			end
 		end
 	}
 
 	skynet.start(function()
-        skynet.error("set gateserver lua dispatch func")
-
-		skynet.dispatch("lua", function (_, address, cmd, ...)
-            skynet.error(string.format("[gateserver] lua message:address:%s, CMD:%s",skynet.address(address), cmd ) )
-            local f = CMD[cmd]
-            print("1wqfewefew")
-            if f then
+		skynet.dispatch("lua", function(_, address, cmd, ...)
+			local f = CMD[cmd]
+			if f then
 				skynet.ret(skynet.pack(f(address, ...)))
 			else
 				skynet.ret(skynet.pack(handler.command(cmd, address, ...)))

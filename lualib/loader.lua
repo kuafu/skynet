@@ -1,3 +1,18 @@
+--print("<file:loader>")
+
+-- loader.lua在snlua中用loadfile加载
+--snlua.so!_init
+--snlua.so!_launch
+--skynet.exe!dispatch_message
+--skynet.exe!skynet_context_message_dispatch
+--skynet.exe!thread_worker
+
+--print(debug.traceback() )
+
+--print("")
+--print("-------------------")
+--print("loader args:",...)
+
 local args = {}
 for word in string.gmatch(..., "%S+") do
 	table.insert(args, word)
@@ -10,19 +25,21 @@ local main, pattern
 local err = {}
 for pat in string.gmatch(LUA_SERVICE, "([^;]+);*") do
 	local filename = string.gsub(pat, "?", SERVICE_NAME)
+    --print("filename:", filename)
 	local f, msg = loadfile(filename)
+    --print("f:",f,", msg:",msg)
 	if not f then
 		table.insert(err, msg)
 	else
 		pattern = pat
 		main = f
-		--print("--->1",SERVICE_NAME, f,msg,filename)
+        --print("\tfilename:",filename)
 		break
 	end
 end
 
 if not main then
-	error("\n\n ----------------- file error -----------------\n"..table.concat(err, "\n"))
+	error(table.concat(err, "\n"))
 end
 
 LUA_SERVICE = nil
@@ -46,4 +63,5 @@ if LUA_PRELOAD then
 	LUA_PRELOAD = nil
 end
 
-main(select(2, table.unpack(args)))
+--print("\targs:",select(2, table.unpack(args)))
+main(select(2, table.unpack(args)) )

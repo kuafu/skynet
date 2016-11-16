@@ -1,6 +1,6 @@
 local skynet = require "skynet"
 local socket = require "socket"
---print( "cmaster.lua" )
+
 --[[
 	master manage data :
 		1. all the slaves address : id -> ipaddr:port
@@ -96,7 +96,7 @@ end
 
 local function monitor_slave(slave_id, slave_address)
 	local fd = slave_node[slave_id].fd
-	skynet.error(string.format("Harbor %d (fd=%d) report %s", slave_id, fd, slave_address))
+	skynet.error(string.format("Harbor %d(fd=%d) report %s", slave_id, fd, slave_address))
 	while pcall(dispatch_slave, fd) do end
 	skynet.error("slave " ..slave_id .. " is down")
 	local message = pack_package("D", slave_id)
@@ -112,9 +112,7 @@ skynet.start(function()
 	skynet.error("master listen socket " .. tostring(master_addr))
 	local fd = socket.listen(master_addr)
 	socket.start(fd , function(id, addr)
-	
-	skynet.error("")
-	skynet.error("[cmaster] connect from " .. addr .. " " .. id)
+		skynet.error("connect from " .. addr .. " " .. id)
 		socket.start(id)
 		local ok, slave, slave_addr = pcall(handshake, id)
 		if ok then

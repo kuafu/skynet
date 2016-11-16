@@ -6,14 +6,14 @@
 -- TYPE            value and meaning
 -- A               1 a host address
 -- NS              2 an authoritative name server
--- MD              3 a mail destination (Obsolete - use MX)
--- MF              4 a mail forwarder (Obsolete - use MX)
+-- MD              3 a mail destination(Obsolete - use MX)
+-- MF              4 a mail forwarder(Obsolete - use MX)
 -- CNAME           5 the canonical name for an alias
 -- SOA             6 marks the start of a zone of authority
--- MB              7 a mailbox domain name (EXPERIMENTAL)
--- MG              8 a mail group member (EXPERIMENTAL)
--- MR              9 a mail rename domain name (EXPERIMENTAL)
--- NULL            10 a null RR (EXPERIMENTAL)
+-- MB              7 a mailbox domain name(EXPERIMENTAL)
+-- MG              8 a mail group member(EXPERIMENTAL)
+-- MR              9 a mail rename domain name(EXPERIMENTAL)
+-- NULL            10 a null RR(EXPERIMENTAL)
 -- WKS             11 a well known service description
 -- PTR             12 a domain name pointer
 -- HINFO           13 host information
@@ -23,13 +23,13 @@
 -- AAAA            28 a ipv6 host address
 -- only appear in the question section:
 -- AXFR            252 A request for a transfer of an entire zone
--- MAILB           253 A request for mailbox-related records (MB, MG or MR)
--- MAILA           254 A request for mail agent RRs (Obsolete - see MX)
+-- MAILB           253 A request for mailbox-related records(MB, MG or MR)
+-- MAILA           254 A request for mail agent RRs(Obsolete - see MX)
 -- *               255 A request for all records
 --
 -- resource recode class:
 -- IN              1 the Internet
--- CS              2 the CSNET class (Obsolete - used only for examples in some obsolete RFCs)
+-- CS              2 the CSNET class(Obsolete - used only for examples in some obsolete RFCs)
 -- CH              3 the CHAOS class
 -- HS              4 Hesiod [Dyer 87]
 -- only appear in the question section:
@@ -71,7 +71,6 @@ local MAX_DOMAIN_LEN = 1024
 local MAX_LABEL_LEN = 63
 local MAX_PACKET_LEN = 2048
 local DNS_HEADER_LEN = 12
-local TIMEOUT = 30 * 100	-- 30 seconds
 
 local QTYPE = {
 	A = 1,
@@ -83,17 +82,7 @@ local QCLASS = {
 	IN = 1,
 }
 
-local weak = {__mode = "kv"}
-local CACHE = {}
-
 local dns = {}
-
-function dns.flush()
-	CACHE[QTYPE.A] = setmetatable({},weak)
-	CACHE[QTYPE.AAAA] = setmetatable({},weak)
-end
-
-dns.flush()
 
 local function verify_domain_name(name)
 	if #name > MAX_DOMAIN_LEN then
@@ -217,51 +206,33 @@ local function resolve(content)
 	-- verify answer
 	assert(answer_header.qdcount == 1, "malformed packet")
 
+	local resp = request_pool[answer_header.tid]
+	if not resp then
+		skynet.error("Recv an invalid tid when dns query")
+		return
+	end
+
 	local question,left = unpack_question(content, left)
+	if question.name ~= resp.name then
+		skynet.error("Recv an invalid name when dns query")
+		return
+	end
 
 	local ttl
 	local answer
-	local answers_ipv4
-	local answers_ipv6
-
+	local answers = {}
 	for i=1, answer_header.ancount do
 		answer, left = unpack_answer(content, left)
-		local answers
-		if answer.atype == QTYPE.A then
-			answers_ipv4 = answers_ipv4 or {}
-			answers = answers_ipv4
-		elseif answer.atype == QTYPE.AAAA then
-			answers_ipv6 = answers_ipv6 or {}
-			answers = answers_ipv6
-		end
-		if answers then
-			local ip = unpack_rdata(answer.atype, answer.rdata)
+		-- only extract qtype address
+		if answer.atype == resp.qtype then
+			local ip = unpack_rdata(resp.qtype, answer.rdata)
 			ttl = ttl and math.min(ttl, answer.ttl) or answer.ttl
 			answers[#answers+1] = ip
 		end
 	end
 
-	if answers_ipv4 then
-		CACHE[QTYPE.A][question.name] = { answers = answers_ipv4, ttl = skynet.now() + ttl * 100 }
-	end
-
-	if answers_ipv6 then
-		CACHE[QTYPE.AAAA][question.name] = { answers = answers_ipv6, ttl = skynet.now() + ttl * 100 }
-	end
-
-	local resp = request_pool[answer_header.tid]
-	if not resp then
-		-- the resp may be timeout
-		return
-	end
-
-	if question.name ~= resp.name then
-		skynet.error("Recv an invalid name when dns query")
-	end
-
-	local r = CACHE[resp.qtype][resp.name]
-	if r then
-		resp.answers = r.answers
+	if #answers > 0 then
+		resp.answers = answers
 	end
 
 	skynet.wakeup(resp.co)
@@ -276,7 +247,6 @@ function dns.server(server, port)
 				break
 			end
 		end
-		f:close()
 		assert(server, "Can't get nameserver")
 	end
 	dns_server = socket.udp(function(str, from)
@@ -286,54 +256,26 @@ function dns.server(server, port)
 	return server
 end
 
-local function lookup_cache(name, qtype, ignorettl)
-	local result = CACHE[qtype][name]
-	if result then
-		if ignorettl or (result.ttl > skynet.now()) then
-			return result.answers
-		end
-	end
-end
-
 local function suspend(tid, name, qtype)
 	local req = {
 		name = name,
 		tid = tid,
 		qtype = qtype,
+		time = skynet.now(),	-- for timeout
 		co = coroutine.running(),
 	}
 	request_pool[tid] = req
-	skynet.fork(function()
-		skynet.sleep(TIMEOUT)
-		local req = request_pool[tid]
-		if req then
-			-- cancel tid
-			skynet.error(string.format("DNS query %s timeout", name))
-			request_pool[tid] = nil
-			skynet.wakeup(req.co)
-		end
-	end)
 	skynet.wait(req.co)
-	local answers = req.answers
+	local answers = request_pool[tid].answers
 	request_pool[tid] = nil
-	if not req.answers then
-		local answers = lookup_cache(name, qtype, true)
-		if answers then
-			return answers[1], answers
-		end
-		error "timeout or no answer"
-	end
-	return req.answers[1], req.answers
+	assert(answers, "no ip")
+	return answers[1], answers
 end
 
 function dns.resolve(name, ipv6)
 	local qtype = ipv6 and QTYPE.AAAA or QTYPE.A
 	local name = name:lower()
 	assert(verify_domain_name(name) , "illegal name")
-	local answers = lookup_cache(name, qtype)
-	if answers then
-		return answers[1], answers
-	end
 	local question_header = {
 		tid = gen_tid(),
 		flags = 0x100, -- flags: 00000001 00000000, set RD

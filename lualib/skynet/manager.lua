@@ -1,32 +1,11 @@
 local skynet = require "skynet"
 local c = require "skynet.core"
 
--- 以下功能转移到launch DUMPSNLUA
---local snlua_list ={}
---function skynet.dump_snlua()
---    skynet.error("+++++++++++++++++++++++++++++++++++++++++++++++++")
---    for k, v in pairs( snlua_list ) do
---        skynet.error( k, v )
---    end
---end
-
---function snlua_name(add, type, name )
---    if type == "snlua" then
---        local handle = tonumber("0x" .. string.sub(add , 2))
---        snlua_list[handle] = name
---        snlua_list[add] = name
---        print("--------------------------" ,  name ,add, handle, skynet.self())
---    end
---end
-
-
 function skynet.launch(...)
-    --skynet.error("<skynet.launch>",...)
-    --skynet.error("---")
+	--skynet.error("<skynet.launch>", table.concat({...},","))
 
-    local addr = c.command("LAUNCH", table.concat({...}," "))
---    snlua_name(addr, ...)
-    if addr then
+	local addr = c.command("LAUNCH", table.concat({...}," "))
+	if addr then
 		return tonumber("0x" .. string.sub(addr , 2))
 	end
 end
@@ -75,6 +54,7 @@ end
 local dispatch_message = skynet.dispatch_message
 
 function skynet.forward_type(map, start_func)
+    print("<skynet.forward_type>")
 	c.callback(function(ptype, msg, sz, ...)
 		local prototype = map[ptype]
 		if prototype then
@@ -90,8 +70,8 @@ function skynet.forward_type(map, start_func)
 end
 
 function skynet.filter(f ,start_func)
-    skynet.error("<skynet.filter>")
-    c.callback(function(...)
+    print("<skynet.filter>")
+	c.callback(function(...)
 		dispatch_message(f(...))
 	end)
 	skynet.timeout(0, function()

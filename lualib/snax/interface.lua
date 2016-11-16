@@ -1,6 +1,6 @@
 local skynet = require "skynet"
 
-return function (name , G, loader)
+return function(name , G, loader)
 	loader = loader or loadfile
 	local mainfunc
 
@@ -8,13 +8,13 @@ return function (name , G, loader)
 		local tmp = {}
 		local function count( _, name, func)
 			if type(name) ~= "string" then
-				error (string.format("%s method only support string", group))
+				error(string.format("%s method only support string", group))
 			end
 			if type(func) ~= "function" then
-				error (string.format("%s.%s must be function"), group, name)
+				error(string.format("%s.%s must be function"), group, name)
 			end
 			if tmp[name] then
-				error (string.format("%s.%s duplicate definition", group, name))
+				error(string.format("%s.%s duplicate definition", group, name))
 			end
 			tmp[name] = true
 			table.insert(id, { #id + 1, group, name, func} )
@@ -51,7 +51,7 @@ return function (name , G, loader)
 		local index = system[name]
 		if index then
 			if type(f) ~= "function" then
-				error (string.format("%s must be a function", name))
+				error(string.format("%s must be a function", name))
 			end
 			func[index][4] = f
 		else

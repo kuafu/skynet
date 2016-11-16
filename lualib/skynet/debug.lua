@@ -2,7 +2,7 @@ local io = io
 local table = table
 local debug = debug
 
-return function (skynet, export)
+return function(skynet, export)
 
 local internal_info_func
 
@@ -74,16 +74,16 @@ return dbgcmd
 end -- function init_dbgcmd
 
 local function _debug_dispatch(session, address, cmd, ...)
-	local f = (dbgcmd or init_dbgcmd())[cmd]	-- lazy init dbgcmd
+	local f =(dbgcmd or init_dbgcmd())[cmd]	-- lazy init dbgcmd
 	assert(f, cmd)
 	f(...)
 end
 
 skynet.register_protocol {
-	name = "debug",
-	id = assert(skynet.PTYPE_DEBUG),
-	pack = assert(skynet.pack),
-	unpack = assert(skynet.unpack),
+	name     = "debug",
+	id       = assert(skynet.PTYPE_DEBUG),
+	pack     = assert(skynet.pack),
+	unpack   = assert(skynet.unpack),
 	dispatch = _debug_dispatch,
 }
 

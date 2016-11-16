@@ -1,11 +1,13 @@
 local skynet = require "skynet"
+skynet.error("<file:launcher>")
+
 local core = require "skynet.core"
 require "skynet.manager"	-- import manager apis
 local string = string
 
 local services = {}
 local command = {}
-local instance = {} -- for confirm (function command.LAUNCH / command.ERROR / command.LAUNCHOK)
+local instance = {} -- for confirm(function command.LAUNCH / command.ERROR / command.LAUNCHOK)
 
 local function handle_to_address(handle)
 	return tonumber("0x" .. string.sub(handle , 2))
@@ -14,26 +16,11 @@ end
 local NORET = {}
 
 function command.LIST()
-    local list = {}
+	local list = {}
 	for k,v in pairs(services) do
 		list[skynet.address(k)] = v
 	end
 	return list
-end
-
-function command.DUMPSNLUA()
-    skynet.error("<command.DUMPSNLUA>")
---    skynet.dump_snlua()
-    for k,v in pairs(services) do
-        skynet.error(k,skynet.address(k),v)
-        --list[skynet.address(k)] = v
-    end
-    skynet.error("---")
-    --skynet.error(command.LIST())
-end
-
-function command.SERVICENAME(addr)
-    return services[addr]
 end
 
 function command.STAT()
@@ -57,7 +44,7 @@ function command.MEM()
 	local list = {}
 	for k,v in pairs(services) do
 		local kb, bytes = skynet.call(k,"debug","MEM")
-		list[skynet.address(k)] = string.format("%.2f Kb (%s)",kb,v)
+		list[skynet.address(k)] = string.format("%.2f Kb(%s)",kb,v)
 	end
 	return list
 end
@@ -78,7 +65,7 @@ function command.REMOVE(_, handle, kill)
 		instance[handle] = nil
 	end
 
-	-- don't return (skynet.ret) because the handle may exit
+	-- don't return(skynet.ret) because the handle may exit
 	return NORET
 end
 
@@ -134,7 +121,7 @@ function command.LAUNCHOK(address)
 	return NORET
 end
 
--- for historical reasons, launcher support text command (for C service)
+-- for historical reasons, launcher support text command(for C service)
 
 skynet.register_protocol {
 	name = "text",
@@ -146,7 +133,7 @@ skynet.register_protocol {
 		elseif cmd == "ERROR" then
 			command.ERROR(address)
 		else
-			error ("Invalid text command " .. cmd)
+			error("Invalid text command " .. cmd)
 		end
 	end,
 }
@@ -163,5 +150,6 @@ skynet.dispatch("lua", function(session, address, cmd , ...)
 		skynet.ret(skynet.pack {"Unknown command"} )
 	end
 end)
+
 
 skynet.start(function() end)

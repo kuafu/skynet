@@ -94,7 +94,7 @@ local function waitfor(db, key1, key2, ...)
 end
 
 skynet.start(function()
-	skynet.dispatch("lua", function (_, _, cmd, ...)
+	skynet.dispatch("lua", function(_, _, cmd, ...)
 		if cmd == "WAIT" then
 			local ret = command.QUERY(...)
 			if ret then

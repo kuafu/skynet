@@ -1,4 +1,7 @@
 local skynet = require "skynet"
+print("<file:gate>")
+--print("[skynet]",skynet)
+
 local gateserver = require "snax.gateserver"
 local netpack = require "netpack"
 
@@ -14,23 +17,13 @@ skynet.register_protocol {
 local handler = {}
 
 function handler.open(source, conf)
-    watchdog = conf.watchdog or source
-
---    skynet.timeout (1, function ()
---        print ("gate opend")
---        print ("")
---        print (":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
-----        skynet.dumpproto()
-----        skynet.dump_snlua()
-----        skynet.call(".launcher", "lua", "DUMPSNLUA")
---    end)
-
+	watchdog = conf.watchdog or source
 end
 
 function handler.message(fd, msg, sz)
-    -- recv a package, forward it
+	-- recv a package, forward it
     skynet.error("<handler.message>")
-    local c = connection[fd]
+	local c = connection[fd]
 	local agent = c.agent
 	if agent then
 		skynet.redirect(agent, c.client, "client", 0, msg, sz)
@@ -44,7 +37,7 @@ function handler.connect(fd, addr)
 --    skynet.error(debug.traceback())
 --    skynet.error("--------------------------------------")
     skynet.error("<gate.handler.connect>")
-    local c = {
+	local c = {
 		fd = fd,
 		ip = addr,
 	}
@@ -86,7 +79,7 @@ local CMD = {}
 
 function CMD.forward(source, fd, client, address)
     skynet.error("<CMD.forward>")
-    local c = assert(connection[fd])
+	local c = assert(connection[fd])
 	unforward(c)
 	c.client = client or 0
 	c.agent = address or source
@@ -96,7 +89,7 @@ end
 
 function CMD.accept(source, fd)
     skynet.error("<CMD.accept>")
-    local c = assert(connection[fd])
+	local c = assert(connection[fd])
 	unforward(c)
 	gateserver.openclient(fd)
 end
@@ -106,6 +99,7 @@ function CMD.kick(source, fd)
 end
 
 function handler.command(cmd, source, ...)
+    skynet.error("gete cmd:" ,cmd)
 	local f = assert(CMD[cmd])
 	return f(source, ...)
 end

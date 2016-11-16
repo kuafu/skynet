@@ -1,4 +1,7 @@
 local skynet = require "skynet"
+print("<file:console>")
+--print("[skynet]",skynet)
+
 local snax   = require "snax"
 local socket = require "socket"
 

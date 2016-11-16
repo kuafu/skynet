@@ -62,7 +62,7 @@ local function getcobj(self)
 			local root = findroot(self)
 			update(root, newobj, newgcobj)
 			if obj == self.__obj then
-				error ("The key [" .. genkey(self) .. "] doesn't exist after update")
+				error("The key [" .. genkey(self) .. "] doesn't exist after update")
 			end
 			obj = self.__obj
 		end

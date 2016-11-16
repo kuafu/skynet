@@ -9,7 +9,7 @@ local assert = assert
 local redis = {}
 local command = {}
 local meta = {
-	__index = command,
+    __index = command,
 	-- DO NOT close channel in __gc
 }
 
@@ -19,7 +19,7 @@ local redcmd = {}
 redcmd[36] = function(fd, data) -- '$'
 	local bytes = tonumber(data)
 	if bytes < 0 then
-		return true,nil
+        return true,nil
 	end
 	local firstline = fd:read(bytes+2)
 	return true,string.sub(firstline,1,-3)
@@ -66,6 +66,7 @@ end
 -------------------
 
 local function redis_login(auth, db)
+    print("redis_login", auth, db)
 	if auth == nil and db == nil then
 		return
 	end
@@ -80,6 +81,8 @@ local function redis_login(auth, db)
 end
 
 function redis.connect(db_conf)
+    print("redis.connect", db_conf)
+
 	local channel = socketchannel.channel {
 		host = db_conf.host,
 		port = db_conf.port or 6379,
@@ -92,6 +95,8 @@ function redis.connect(db_conf)
 end
 
 function command:disconnect()
+    print("redis.disconnect")
+
 	self[1]:close()
 	setmetatable(self, nil)
 end
@@ -152,7 +157,7 @@ end
 
 setmetatable(command, { __index = function(t,k)
 	local cmd = string.upper(k)
-	local f = function (self, v, ...)
+	local f = function(self, v, ...)
 		if type(v) == "table" then
 			return self[1]:request(compose_message(cmd, v), read_response)
 		else
@@ -170,12 +175,12 @@ end
 
 function command:exists(key)
 	local fd = self[1]
-	return fd:request(compose_message ("EXISTS", key), read_boolean)
+	return fd:request(compose_message("EXISTS", key), read_boolean)
 end
 
 function command:sismember(key, value)
 	local fd = self[1]
-	return fd:request(compose_message ("SISMEMBER", {key, value}), read_boolean)
+	return fd:request(compose_message("SISMEMBER", {key, value}), read_boolean)
 end
 
 local function compose_table(lines, msg)
@@ -201,7 +206,7 @@ function command:pipeline(ops,resp)
 	end
 
 	if resp then
-		return fd:request(cmds, function (fd)
+		return fd:request(cmds, function(fd)
 			for i=1, #ops do
 				local ok, out = read_response(fd)
 				table.insert(resp, {ok = ok, out = out})
@@ -209,7 +214,7 @@ function command:pipeline(ops,resp)
 			return true, resp
 		end)
 	else
-		return fd:request(cmds, function (fd)
+		return fd:request(cmds, function(fd)
 			local ok, out
 			for i=1, #ops do
 				ok, out = read_response(fd)
@@ -233,11 +238,12 @@ local watchmeta = {
 
 local function watch_login(obj, auth)
 	return function(so)
+        print("watch_login")
 		if auth then
 			so:request("AUTH "..auth.."\r\n", read_response)
 		end
 		for k in pairs(obj.__psubscribe) do
-			so:request(compose_message ("PSUBSCRIBE", k))
+			so:request(compose_message("PSUBSCRIBE", k))
 		end
 		for k in pairs(obj.__subscribe) do
 			so:request(compose_message("SUBSCRIBE", k))

@@ -9,7 +9,7 @@ local socket_error = setmetatable({} , { __tostring = function() return "[Socket
 sockethelper.socket_error = socket_error
 
 function sockethelper.readfunc(fd)
-	return function (sz)
+	return function(sz)
 		local ret = readbytes(fd, sz)
 		if ret then
 			return ret
@@ -18,8 +18,6 @@ function sockethelper.readfunc(fd)
 		end
 	end
 end
-
-sockethelper.readall = socket.readall
 
 function sockethelper.writefunc(fd)
 	return function(content)
@@ -31,8 +29,7 @@ function sockethelper.writefunc(fd)
 end
 
 function sockethelper.connect(host, port)
-    print("<sockethelper.connect>")
-    local fd = socket.open(host, port)
+	local fd = socket.open(host, port)
 	if fd then
 		return fd
 	end

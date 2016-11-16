@@ -58,24 +58,14 @@ function command.DEL(source, c)
 	return NORET
 end
 
--- forward multicast message to a node (channel id use the session field)
+-- forward multicast message to a node(channel id use the session field)
 local function remote_publish(node, channel, source, ...)
 	skynet.redirect(node_address[node], source, "multicast", channel, ...)
 end
 
--- publish a message, for local node, use the message pointer (call mc.bind to add the reference)
--- for remote node, call remote_publish. (call mc.unpack and skynet.tostring to convert message pointer to string)
+-- publish a message, for local node, use the message pointer(call mc.bind to add the reference)
+-- for remote node, call remote_publish.(call mc.unpack and skynet.tostring to convert message pointer to string)
 local function publish(c , source, pack, size)
-	local remote = channel_remote[c]
-	if remote then
-		-- remote publish should unpack the pack, because we should not publish the pointer out.
-		local _, msg, sz = mc.unpack(pack, size)
-		local msg = skynet.tostring(msg,sz)
-		for node in pairs(remote) do
-			remote_publish(node, c, source, msg)
-		end
-	end
-
 	local group = channel[c]
 	if group == nil or next(group) == nil then
 		-- dead channel, delete the pack. mc.bind returns the pointer in pack
@@ -89,6 +79,15 @@ local function publish(c , source, pack, size)
 		-- the msg is a pointer to the real message, publish pointer in local is ok.
 		skynet.redirect(k, source, "multicast", c , msg)
 	end
+	local remote = channel_remote[c]
+	if remote then
+		-- remote publish should unpack the pack, because we should not publish the pointer out.
+		local _, msg, sz = mc.unpack(pack, size)
+		local msg = skynet.tostring(msg,sz)
+		for node in pairs(remote) do
+			remote_publish(node, c, source, msg)
+		end
+	end
 end
 
 skynet.register_protocol {
@@ -100,7 +99,7 @@ skynet.register_protocol {
 	dispatch = publish,
 }
 
--- publish a message, if the caller is remote, forward the message to the owner node (by remote_publish)
+-- publish a message, if the caller is remote, forward the message to the owner node(by remote_publish)
 -- If the caller is local, call publish
 function command.PUB(source, c, pack, size)
 	assert(skynet.harbor(source) == harbor_id)
@@ -113,8 +112,8 @@ function command.PUB(source, c, pack, size)
 	end
 end
 
--- the node (source) subscribe a channel
--- MUST call by channel owner node (assert source is not local and channel is create by self)
+-- the node(source) subscribe a channel
+-- MUST call by channel owner node(assert source is not local and channel is create by self)
 -- If channel is not exist, return true
 -- Else set channel_remote[channel] true
 function command.SUBR(source, c)
@@ -132,7 +131,7 @@ function command.SUBR(source, c)
 	group[node] = true
 end
 
--- the service (source) subscribe a channel
+-- the service(source) subscribe a channel
 -- If the channel is remote, node subscribe it by send a SUBR to the owner .
 function command.SUB(source, c)
 	local node = c % 256

@@ -39,7 +39,7 @@ local function wrap_locals(co, source, level, ext_funcs)
 		end
 		if name:byte() ~= 40 then	-- '('
 			table.insert(uv, name)
-			table.insert(locals, ("[%d]=%s,"):format(i,name))
+			table.insert(locals,("[%d]=%s,"):format(i,name))
 			local_id[name] = value
 		end
 		i = i + 1
@@ -125,7 +125,7 @@ local function exec(co, level, func, update, ...)
 	end
 end
 
-return function (source, co, level, ext_funcs)
+return function(source, co, level, ext_funcs)
 	co = co or coroutine.running()
 	level = level or 0
 	return exec(co, level, wrap_locals(co, source, level, ext_funcs))

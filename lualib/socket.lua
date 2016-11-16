@@ -1,5 +1,7 @@
 local driver = require "socketdriver"
 local skynet = require "skynet"
+--print("<file:socket>")
+
 local skynet_core = require "skynet.core"
 local assert = assert
 
@@ -141,7 +143,7 @@ local function default_warning(id, size)
 		local last = s.warningsize or 0
 		if last + 64 < size then	-- if size increase 64K
 			s.warningsize = size
-			skynet.error(string.format("WARNING: %d K bytes need to send out (fd = %d)", size, id))
+			skynet.error(string.format("WARNING: %d K bytes need to send out(fd = %d)", size, id))
 		end
 		s.warningsize = size
 end
@@ -159,13 +161,12 @@ skynet.register_protocol {
 	name = "socket",
 	id = skynet.PTYPE_SOCKET,	-- PTYPE_SOCKET = 6
 	unpack = driver.unpack,
-	dispatch = function (_, _, t, ...)
+	dispatch = function(_, _, t, ...)
 		socket_message[t](...)
 	end
 }
 
 local function connect(id, func)
-	skynet.error("<socket.connect>", "id:", id, ", func:", tostring( func ) )
 	local newbuffer
 	if func == nil then
 		newbuffer = driver.buffer()
@@ -180,7 +181,6 @@ local function connect(id, func)
 		callback = func,
 		protocol = "TCP",
 	}
-	assert(not socket_pool[id], "socket is not closed")
 	socket_pool[id] = s
 	suspend(s)
 	local err = s.connecting
@@ -194,8 +194,7 @@ local function connect(id, func)
 end
 
 function socket.open(addr, port)
-    --skynet.error(string.format("----------------<socket.open> %s", (port) ) )
-    local id = driver.connect(addr,port)
+	local id = driver.connect(addr,port)
 	return connect(id)
 end
 
@@ -229,11 +228,6 @@ function socket.shutdown(id)
 	close_fd(id, driver.shutdown)
 end
 
-function socket.close_fd(id)
-	assert(socket_pool[id] == nil,"Use socket.close instead")
-	driver.close(id)
-end
-
 function socket.close(id)
 	local s = socket_pool[id]
 	if s == nil then
@@ -244,7 +238,7 @@ function socket.close(id)
 		-- notice: call socket.close in __gc should be carefully,
 		-- because skynet.wait never return in __gc, so driver.clear may not be called
 		if s.co then
-			-- reading this socket on another coroutine, so don't shutdown (clear the buffer) immediately
+			-- reading this socket on another coroutine, so don't shutdown(clear the buffer) immediately
 			-- wait reading coroutine read the buffer.
 			assert(not s.closing)
 			s.closing = coroutine.running()
@@ -254,8 +248,8 @@ function socket.close(id)
 		end
 		s.connected = false
 	end
-	close_fd(id)	-- clear the buffer (already close fd)
-	assert(s.lock == nil or next(s.lock) == nil)
+	close_fd(id)	-- clear the buffer(already close fd)
+	assert(s.lock_set == nil or next(s.lock_set) == nil)
 	socket_pool[id] = nil
 end
 
@@ -412,7 +406,6 @@ end
 local udp_socket = {}
 
 local function create_udp_object(id, cb)
-	assert(not socket_pool[id], "socket is not closed")
 	socket_pool[id] = {
 		id = id,
 		connected = true,

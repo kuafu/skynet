@@ -29,7 +29,7 @@ local client_meta =	{
 	__index	= function(self, key)
 		return rawget(mongo_client,	key) or	self:getDB(key)
 	end,
-	__tostring = function (self)
+	__tostring = function(self)
 		local port_string
 		if self.port then
 			port_string	= ":" .. tostring(self.port)
@@ -45,10 +45,10 @@ local client_meta =	{
 local mongo_db = {}
 
 local db_meta =	{
-	__index	= function (self, key)
+	__index	= function(self, key)
 		return rawget(mongo_db,	key) or	self:getCollection(key)
 	end,
-	__tostring = function (self)
+	__tostring = function(self)
 		return "[mongo db :	" .. self.name .. "]"
 	end
 }
@@ -58,7 +58,7 @@ local collection_meta =	{
 	__index	= function(self, key)
 		return rawget(mongo_collection,	key) or	self:getCollection(key)
 	end	,
-	__tostring = function (self)
+	__tostring = function(self)
 		return "[mongo collection :	" .. self.full_name	.. "]"
 	end
 }
@@ -180,7 +180,7 @@ function mongo_client:auth(user,password)
 	end
 
 	local key =	md5.sumhexa(string.format("%s%s%s",result.nonce,user,password))
-	local result= self:runCommand ("authenticate",1,"user",user,"nonce",result.nonce,"key",key)
+	local result= self:runCommand("authenticate",1,"user",user,"nonce",result.nonce,"key",key)
 	return result.ok ==	1
 end
 
@@ -200,7 +200,7 @@ function mongo_db:runCommand(cmd,cmd_v,...)
 		bson_cmd = bson_encode_order(cmd,cmd_v,...)
 	end
 	local pack = driver.query(request_id, 0, self.__cmd, 0,	1, bson_cmd)
-	-- we must hold	req	(req.data),	because	req.document is	a lightuserdata, it's a	pointer	to the string (req.data)
+	-- we must hold	req	(req.data),	because	req.document is	a lightuserdata, it's a	pointer	to the string(req.data)
 	local req =	sock:request(pack, request_id)
 	local doc =	req.document
 	return bson_decode(doc)
@@ -246,7 +246,7 @@ function mongo_collection:batch_insert(docs)
 end
 
 function mongo_collection:update(selector,update,upsert,multi)
-	local flags	= (upsert and 1	or 0) +	(multi and 2 or	0)
+	local flags	=(upsert and 1	or 0) +	(multi and 2 or	0)
 	local sock = self.connection.__sock
 	local pack = driver.update(self.full_name, flags, bson_encode(selector), bson_encode(update))
 	sock:request(pack)
@@ -263,7 +263,7 @@ function mongo_collection:findOne(query, selector)
 	local request_id = conn:genId()
 	local sock = conn.__sock
 	local pack = driver.query(request_id, 0, self.full_name, 0,	1, query and bson_encode(query)	or empty_bson, selector	and	bson_encode(selector))
-	-- we must hold	req	(req.data),	because	req.document is	a lightuserdata, it's a	pointer	to the string (req.data)
+	-- we must hold	req	(req.data),	because	req.document is	a lightuserdata, it's a	pointer	to the string(req.data)
 	local req =	sock:request(pack, request_id)
 	local doc =	req.document
 	return bson_decode(doc)
@@ -325,7 +325,7 @@ function mongo_collection:createIndex(keys, option)
 
 	if not name then
 		for k, v in pairs(keys) do
-			name = (name == nil) and k or (name .. "_" .. k)
+			name =(name == nil) and k or(name .. "_" .. k)
 			name = name  .. "_" .. v
 		end
 	end

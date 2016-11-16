@@ -1,13 +1,15 @@
 local parser = require "sprotoparser"
-local core = require "sproto.core"
+local core   = require "sproto.core"    --c中的sproto_core
 local sproto = require "sproto"
+
+--local print_r = require "print_r"
+
 
 local loader = {}
 
---print("lualib/sprotoloader.lua")
---skynet.error(string.format("Unknown request (%s): %s", prototype, c.tostring(msg,sz)))
-
 function loader.register(filename, index)
+    print("------ <sprotoloader>  -------")
+    print("loader.register file:",filename, ", index", index)
 	local f = assert(io.open(filename), "Can't open sproto file")
 	local data = f:read "a"
 	f:close()
@@ -20,7 +22,9 @@ function loader.save(bin, index)
 	core.saveproto(sp, index)
 end
 
+--返回一个lua sproto表，c sproto是其成员
 function loader.load(index)
+    --返回c中的lightuserdata struct sproto*
 	local sp = core.loadproto(index)
 	--  no __gc in metatable
 	return sproto.sharenew(sp)

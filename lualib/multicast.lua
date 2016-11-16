@@ -11,7 +11,7 @@ local chan_meta = {
 	__gc = function(self)
 		self:unsubscribe()
 	end,
-	__tostring = function (self)
+	__tostring = function(self)
 		return string.format("[Multicast:%x]",self.channel)
 	end,
 }
@@ -76,7 +76,7 @@ local function dispatch_subscribe(channel, source, pack, msg, sz)
 	local self = dispatch[channel]
 	if not self then
 		mc.close(pack)
-		error ("Unknown channel " .. channel)
+		error("Unknown channel " .. channel)
 	end
 
 	if self.__subscribe then

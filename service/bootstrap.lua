@@ -1,11 +1,17 @@
+print("<file:bootstrap>", ...)
+
+--skynet.err("<file:bootstrap>")
+--print(debug.traceback() )
+
 local skynet = require "skynet"
 local harbor = require "skynet.harbor"
 require "skynet.manager"	-- import skynet.launch, ...
 local memory = require "memory"
 
---print("bootstrap --->1")
 skynet.start(function()
-	--print("bootstrap --->2")
+    skynet.error("")
+    skynet.error("bootstrap")
+
 	local sharestring = tonumber(skynet.getenv "sharestring")
 	memory.ssexpand(sharestring or 4096)
 
@@ -45,6 +51,10 @@ skynet.start(function()
 		skynet.name("DATACENTER", datacenter)
 	end
 	skynet.newservice "service_mgr"
+
+    skynet.error("")
+    skynet.error("starting main service...")
 	pcall(skynet.newservice,skynet.getenv "start" or "main")
+
 	skynet.exit()
 end)
