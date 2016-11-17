@@ -134,16 +134,23 @@ _launch(struct skynet_context * context, void *ud, int type, int session, uint32
 int
 snlua_init(struct snlua *l, struct skynet_context *ctx, const char * args) {
 	int sz = strlen(args);
-	char * tmp = skynet_malloc(sz);
+	char * tmp = skynet_malloc(sz+1);
 	memcpy(tmp, args, sz);
+	tmp[sz] = 0;
 	skynet_callback(ctx, l , _launch);
-	const char * self = skynet_command(ctx, "REG", NULL);
-	uint32_t handle_id = strtoul(self+1, NULL, 16);
+	const char * self = skynet_command(ctx, "REG", NULL);	//:1000002
+	uint32_t handle_id = strtoul(self + 1, NULL, 16);		//16777218
+
+	static int index = 0;
+	skynet_error(ctx, "");
+	skynet_error(ctx, "[snlua_init #%d] %s(%s | %d)", index++, tmp, self, handle_id);
+
 	// it must be first message
 	skynet_send(ctx, 0, handle_id, PTYPE_TAG_DONTCOPY,0, tmp, sz);
 	return 0;
 }
 
+//每个snlua服务对应一个lua状态机
 struct snlua *
 snlua_create(void) {
 	struct snlua * l = skynet_malloc(sizeof(*l));
