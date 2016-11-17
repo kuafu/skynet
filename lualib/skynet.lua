@@ -116,11 +116,11 @@ end
 local coroutine_pool = {}
 local coroutine_yield = coroutine.yield
 
--- ´´½¨Ò»¸öcoroutine£¬²¢¼ÓÈëpool
+-- åˆ›å»ºä¸€ä¸ªcoroutineï¼Œå¹¶åŠ å…¥pool
 local function co_create(f)
     --print("co_create:" , f)
 
-    --removeµÚ¶ş¸ö²ÎÊıÄ¬ÈÏÊÇ±í×îºóÒ»¸ö
+    --removeç¬¬äºŒä¸ªå‚æ•°é»˜è®¤æ˜¯è¡¨æœ€åä¸€ä¸ª
 	local co = table.remove(coroutine_pool)
 	if co == nil then
 		co = coroutine.create(function(...)
@@ -405,8 +405,8 @@ end
 
 --	skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
 
--- ×èÈûÊ½·¢ËÍÒ»¸ö·şÎñÇëÇó
--- ²ÎÊı´ò°ü
+-- é˜»å¡å¼å‘é€ä¸€ä¸ªæœåŠ¡è¯·æ±‚
+-- å‚æ•°æ‰“åŒ…
 function skynet.call(addr, typename, ...)
 	local p = proto[typename]
 	local session = c.send(addr, p.id , nil , p.pack(...))
@@ -414,7 +414,7 @@ function skynet.call(addr, typename, ...)
 		error("call to invalid address " .. skynet.address(addr))
 	end
 
-    --µÈ¼ÛÒ»¸ö»Øµ÷£¿
+    --ç­‰ä»·ä¸€ä¸ªå›è°ƒï¼Ÿ
 	return p.unpack(yield_call(addr, session))
 end
 
@@ -445,7 +445,7 @@ function skynet.wakeup(co)
 	end
 end
 
--- ¶¨ÒåĞ­ÒéµÄÏûÏ¢´¦Àí·½·¨
+-- å®šä¹‰åè®®çš„æ¶ˆæ¯å¤„ç†æ–¹æ³•
 function skynet.dispatch(typename, func)
     --skynet.error("<skynet.dispatch>:", typename, func)
 
@@ -684,7 +684,7 @@ function skynet.init_service(start)
 	end
 end
 
---µ÷ÓÃcº¯Êıskynet_callback×¢²á»Øµ÷µ½contextÉÏ
+--è°ƒç”¨cå‡½æ•°skynet_callbackæ³¨å†Œå›è°ƒåˆ°contextä¸Š
 function skynet.start(start_func)
     --skynet.error("<skynet.start> start_func:", start_func)
 	c.callback(skynet.dispatch_message)
