@@ -594,7 +594,7 @@ static void json_append_number(lua_State *l, json_config_t *cfg,
     if (lua_isinteger(l, lindex)) {
         lua_Integer num = lua_tointeger(l, lindex);
         strbuf_ensure_empty_length(json, FPCONV_G_FMT_BUFSIZE);
-		//2016-11-17
+		//2016-11-17 
         len = lua_integer2str(strbuf_empty_ptr(json),num, num);
         strbuf_extend_length(json, len);
         return;
