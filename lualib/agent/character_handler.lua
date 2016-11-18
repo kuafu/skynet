@@ -44,17 +44,27 @@ local function check_character(account, id)
 end
 
 function REQUEST.character_list()
-    print("REQUEST.character_list", user.account)
+    skynet.error("<REQUEST.character_list> account:", user.account)
 	local list = load_list(user.account)
-    print("\tlist:", list)
-    --print_r(list)
+    skynet.error("char list size:", #list )
+    if #list==0 then
+    	syslog.errorf("Can not found character list from database, user account:%s", user.account)
+    	print("user data:")
+    	print_r(user)
+    	-- for k,v in pairs(user) do
+    	-- 	skynet.error(k,v)
+    	-- end
+    end
+
 	local character = {}
 	for _, id in pairs(list) do
-        print("id:",id)
+        skynet.error("id:",id)
 		local c = skynet.call(database, "lua", "character", "load", id)
+		skynet.error("unpackjson string:", c)		
 		if c then
-			character[id] = dbpacker.unpackjson(c)
+			character[id] = dbpacker.unpackjson(c)			
 		end
+		
 	end
 	return { character = character }
 end

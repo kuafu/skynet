@@ -205,11 +205,14 @@ local function connect_backup(self)
 end
 
 local function connect_once(self)
+	skynet.error("\t\t+-- <connect_once>")
 	if self.__closed then
 		return false
 	end
 	assert(not self.__sock and not self.__authcoroutine)
+	skynet.error("\t\t+--- <connect_once> socket.open(host=", self.__host, ", port=", self.__port, ")")
 	local fd,err = socket.open(self.__host, self.__port)
+	skynet.error("\t\t+--- fd:",fd, ", err:", err)
 	if not fd then
 		fd = connect_backup(self)
 		if not fd then
@@ -221,8 +224,11 @@ local function connect_once(self)
 	end
 
 	self.__sock = setmetatable( {fd} , channel_socket_meta )
+
+	skynet.error("\t\t+--- fork")
 	skynet.fork(dispatch_function(self), self)
 
+	skynet.error("coroutine start")
 	if self.__auth then
 		self.__authcoroutine = coroutine.running()
 		local ok , message = pcall(self.__auth, self)
@@ -245,6 +251,7 @@ local function connect_once(self)
 end
 
 local function try_connect(self , once)
+	skynet.error("\t+--- <try_connect>")
 	local t = 0
 	while not self.__closed do
 		local ok, err = connect_once(self)
@@ -286,6 +293,7 @@ local function check_connection(self)
 end
 
 local function block_connect(self, once)
+	skynet.error("+--- <block_connect>")
 	local r = check_connection(self)
 	if r ~= nil then
 		return r

@@ -8,7 +8,7 @@ local syslog = {
 		"I|",
 		"N|",
 		"W|",
-		"E|",
+		"Error|",
 	},
 }
 
@@ -61,11 +61,11 @@ function syslog.warningf(...)
 	writef(4, ...)
 end
 
-function syslog.err(...)
+function syslog.error(...)
 	write(5, ...)
 end
 
-function syslog.errf(...)
+function syslog.errorf(...)
 	writef(5, ...)
 end
 

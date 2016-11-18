@@ -1,4 +1,4 @@
-print("<lualib/config/database>")
+--print("<lualib/config/database>")
 
 local host = "127.0.0.1"
 local port = 6379

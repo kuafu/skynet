@@ -1,6 +1,6 @@
 root       = "./"
 thread     = 1
-logger     = "userlog.txt"
+logger     = nil --"userlog.txt"
 logpath    = "./log/"
 harbor     = 1
 address    = "127.0.0.1:2526"

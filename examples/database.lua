@@ -1,6 +1,7 @@
 print("<examples/database>")
-local skynet = require "skynet"
-local redis = require "redis"
+local syslog	= require "syslog"
+local skynet 	= require "skynet"
+local redis 	= require "redis"
 
 local config = require "config.database"
 local account = require "db.account"
@@ -50,22 +51,21 @@ skynet.start(function()
 	module_init("account", account)
 	module_init("character", character)
 
-    print("conneting redis...")
+    syslog.info("Start conneting redis center...")
 	center = redis.connect(config.center)
-    print("--------------------------------------")
-    print(">", center)
+
 	ngroup = #config.group
+    syslog.info("redis group count:", ngroup)
 	for _, c in ipairs(config.group) do
-        print("\tc:",c)
+    	syslog.info("conneting redis center #", _)
         print_r(c)
 		table.insert(group, redis.connect(c))
-        print("\t--")
+        syslog.info("--")
 	end
-    print("--------------------------------------")
-    --table.insert(group, redis.connect(c))
+    syslog.info("End conneting redis")
 
 	skynet.dispatch("lua", function(_, _, mod, cmd, ...)
-        print("database mod:"..mod..", cmd:"..cmd)
+        syslog.info("database mod:"..mod..", cmd:"..cmd)
 		local m = MODULE[mod]
 		if not m then
 			return skynet.ret()

@@ -9,14 +9,14 @@ skynet.start(function()
 
 	skynet.newservice("debug_console", config.debug_port)
 	skynet.newservice("protod")
-    print("starting database...")
+	skynet.error("starting database...")
 	skynet.uniqueservice("database")
 
-    print("")
-    print("starting loginserver...")
+	skynet.error("")
+	skynet.error("starting loginserver...")
 	local loginserver = skynet.newservice("loginserver")
 	skynet.call(loginserver, "lua", "open", login_config)	
-    print("finishing loginserver")
+    skynet.error("finishing loginserver")
 
 	local gamed = skynet.newservice("gamed", loginserver)
 	skynet.call(gamed, "lua", "open", game_config)

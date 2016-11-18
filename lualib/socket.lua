@@ -32,6 +32,7 @@ end
 local function suspend(s)
 	assert(not s.co)
 	s.co = coroutine.running()
+
 	skynet.wait(s.co)
 	-- wakeup closing corouting every time suspend,
 	-- because socket.close() will wait last socket buffer operation before clear the buffer.
@@ -167,6 +168,7 @@ skynet.register_protocol {
 }
 
 local function connect(id, func)
+	skynet.error("<socket.connect>")
 	local newbuffer
 	if func == nil then
 		newbuffer = driver.buffer()
@@ -182,7 +184,9 @@ local function connect(id, func)
 		protocol = "TCP",
 	}
 	socket_pool[id] = s
+
 	suspend(s)
+
 	local err = s.connecting
 	s.connecting = nil
 	if s.connected then
@@ -194,7 +198,9 @@ local function connect(id, func)
 end
 
 function socket.open(addr, port)
+	skynet.error("<socket.open>", addr,":",port)
 	local id = driver.connect(addr,port)
+	skynet.error("+socket id", id)
 	return connect(id)
 end
 

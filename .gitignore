@@ -16,3 +16,4 @@ build/vs2013/My Amplifier XE Results*
 userlog.txt
 /luaclib
 /cservice
+/*.sublime-workspace

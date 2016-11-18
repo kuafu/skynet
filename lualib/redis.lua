@@ -1,6 +1,7 @@
 local skynet = require "skynet"
 local socket = require "socket"
 local socketchannel = require "socketchannel"
+local print_r = require "print_r"
 
 local table = table
 local string = string
@@ -65,37 +66,38 @@ end
 
 -----只是返回login的闭包，闭包........
 local function redis_login(auth, db)
-    skynet.error("<redis_login> auth:", auth, ", db:", db)
+    skynet.error("<redis_login>")
 	if auth == nil and db == nil then
 		skynet.error("  Login Error!")
 		return
 	end
 
-	skynet.error("1----------")
-	return function(so)
+	return function(ch)
+		 skynet.error("\t+--- <redis_login> return function, ch:", ch )
 		if auth then
-			so:request("AUTH "..auth.."\r\n", read_response)
+			ch:request("AUTH "..auth.."\r\n", read_response)
 		end
 		if db then
-			so:request("SELECT "..db.."\r\n", read_response)
+			ch:request("SELECT "..db.."\r\n", read_response)
 		end
 	end
 end
 
 function redis.connect(db_conf)
-	skynet.error("<redis.connect> auth:", db_conf.auth, ", db:", db_conf.db)
+	skynet.error("<redis.connect> auth:", db_conf.auth, ", db:", db_conf.db, ", host:", db_conf.host, ", port:", db_conf.port)
 
 	local channel = socketchannel.channel {
 		host = db_conf.host,
 		port = db_conf.port or 6379,
-		auth = redis_login(db_conf.auth, db_conf.db),
+		auth = redis_login(db_conf.auth, db_conf.db),	--返回的闭包函数作为connect实际call的方法
 		nodelay = true,
 	}
 	-- try connect first only once
-	skynet.error("2----------")
+	skynet.error("begin connect channel:", channel)
 
 	channel:connect(true)
-	skynet.error("3----------")
+	skynet.error("end connect")
+	skynet.error("")
 	return setmetatable( { channel }, meta )
 end
 
