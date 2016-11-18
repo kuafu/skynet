@@ -31,7 +31,8 @@ skynet_error(struct skynet_context * context, const char *msg, ...) {
 
 	//mod name
 	char tmp[LOG_MESSAGE_SIZE];
-	len = snprintf(tmp, LOG_MESSAGE_SIZE, "%s| %s", skynet_mod_name(context), tmp1);
+	//len = snprintf(tmp, LOG_MESSAGE_SIZE, "%s| %s", skynet_mod_name(context), tmp1);
+	len = snprintf(tmp, LOG_MESSAGE_SIZE, "%s", tmp1);
 
 	if (len >=0 && len < LOG_MESSAGE_SIZE) {
 		data = skynet_strdup(tmp);

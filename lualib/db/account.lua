@@ -1,5 +1,6 @@
 local constant = require "constant"
 local srp = require "srp"
+local syslog	= require "syslog"
 
 
 local account = {}
@@ -15,7 +16,7 @@ end
 
 function account.load(name)
 	assert(name)
-    print("account.load")
+    syslog.debug("account.load name:", name)
 
 	local acc = { name = name }
 
@@ -31,7 +32,10 @@ function account.load(name)
 --	acc.id = 4400
 --	acc.salt = "salt"
 --	acc.verifier = "verifier"
-    print("\tacc:",acc)
+    syslog.debug("acc:")
+    for k,v in pairs(acc) do
+    	syslog.debug("\t+-- ",k,v)
+    end
 	return acc
 end
 

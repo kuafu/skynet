@@ -38,7 +38,7 @@ static int _logger(struct skynet_context * context, void *ud, int type, int sess
 
 	struct logger * inst = ud;
 #ifdef _MSC_VER
-	fwprintf(inst->handle, L"[:%08x ", source);
+	fwprintf(inst->handle, L"[:%08x]", source);
 	//fwprintf(stdout, L"[:%08x] ", source);
 	int wlen = MultiByteToWideChar(CP_UTF8,0,msg,sz,NULL,0);
 	wchar_t *wbuf = (wchar_t*)malloc((sz+1)*sizeof(wchar_t));

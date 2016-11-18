@@ -38,14 +38,14 @@ function character.save(id, data)
 end
 
 function character.load(id)
-    print("character.load")
+    syslog.debug("character.load")
 	connection, key, field = make_character_key(id)
 	local data = connection:hget(key, field) or error()
 	return data
 end
 
 function character.list(account)
-    print("character.list:"..account)
+    syslog.debug("character.list:"..account)
 	local connection, key, field = make_list_key(account)
     --print("->", connection, key, field)
 

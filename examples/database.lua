@@ -65,7 +65,8 @@ skynet.start(function()
     syslog.info("End conneting redis")
 
 	skynet.dispatch("lua", function(_, _, mod, cmd, ...)
-        syslog.info("database mod:"..mod..", cmd:"..cmd)
+		syslog.debug("------------------------------------------")
+		syslog.debug("database mod:"..mod..", cmd:"..cmd, ", other:", ...)
 		local m = MODULE[mod]
 		if not m then
 			return skynet.ret()

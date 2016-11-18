@@ -24,6 +24,7 @@ end)
 
 local function load_list(account)
     --print("load_list")
+    syslog.debug("load_list database add:", database)
 	local list = skynet.call(database, "lua", "character", "list", account)
 	if list then
 		list = dbpacker.unpackjson(list)

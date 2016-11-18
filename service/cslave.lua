@@ -1,5 +1,6 @@
 local skynet = require "skynet"
 local socket = require "socket"
+local syslog = require "syslog"
 require "skynet.manager"	-- import skynet.launch, ...
 local table = table
 
@@ -223,9 +224,7 @@ function harbor.QUERYNAME(fd, name)
 end
 
 skynet.start(function()
-    print("")
-    print("cslave-skynet.start")
-    print("skynet:",skynet)
+    syslog.debug("cslave---skynet.start")
 	local master_addr = skynet.getenv "master"
 	local harbor_id = tonumber(skynet.getenv "harbor")
 	local slave_address = assert(skynet.getenv "address")
