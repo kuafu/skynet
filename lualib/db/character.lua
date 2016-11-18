@@ -5,7 +5,7 @@ local character = {}
 local connection_handler
 
 function character.init(ch)
-    --error()
+   --error("+++++++++++++++++++++")
 	connection_handler = ch
 end
 
@@ -23,12 +23,19 @@ local function make_character_key(id)
 end
 
 local function make_name_key(name)
+	syslog.debug("<make_name_key>",name)
 	return connection_handler(name), "char-name", name
 end
 
 function character.reserve(id, name)
+	syslog.debug("<character.reserve(id, name) >",id, name)
 	local connection, key, field = make_name_key(name)
-	assert(connection:hsetnx(key, field, id) ~= 0)
+	syslog.debug("\t+-- ", connection, key, field)
+
+	local hs = connection:hsetnx(key, field, id)
+	syslog.debug("\t+-- hs", hs)
+	assert(hs ~= 0)
+	syslog.debug("<character.reserve/>")
 	return id
 end
 

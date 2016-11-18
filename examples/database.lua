@@ -27,6 +27,7 @@ local function hash_num(num)
 end
 
 function connection_handler(key)
+	syslog.debug("<connection_handler> key", key ,type(key))
 	local hash
 	local t = type(key)
 	if t == "string" then
@@ -34,7 +35,8 @@ function connection_handler(key)
 	else
 		hash = hash_num(assert(tonumber(key)))
 	end
-
+	syslog.debug("  hash:", hash)	--696
+	
 	return group[hash % ngroup + 1]
 end
 
@@ -65,8 +67,8 @@ skynet.start(function()
     syslog.info("End conneting redis")
 
 	skynet.dispatch("lua", function(_, _, mod, cmd, ...)
-		syslog.debug("------------------------------------------")
-		syslog.debug("database mod:"..mod..", cmd:"..cmd, ", other:", ...)
+		syslog.debug("")
+		syslog.debug("[database dispatch]database mod:"..mod..", cmd:"..cmd, ", other:", ...)
 		local m = MODULE[mod]
 		if not m then
 			return skynet.ret()

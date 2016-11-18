@@ -24,7 +24,7 @@ end)
 
 local function load_list(account)
     --print("load_list")
-    syslog.debug("load_list database add:", database)
+    syslog.debug("load_list database addr:", database)
 	local list = skynet.call(database, "lua", "character", "list", account)
 	if list then
 		list = dbpacker.unpackjson(list)
@@ -50,8 +50,8 @@ function REQUEST.character_list()
     skynet.error("char list size:", #list )
     if #list==0 then
     	syslog.errorf("Can not found character list from database, user account:%s", user.account)
-    	print("user data:")
-    	print_r(user)
+    	--print("user data:")
+    	--print_r(user)
     	-- for k,v in pairs(user) do
     	-- 	skynet.error(k,v)
     	-- end
@@ -97,12 +97,23 @@ local function create(name, race, class)
 end
 
 function REQUEST.character_create(args)
-	for k, v in pairs(args) do print(k, v) end
+	syslog.debug("<REQUEST.character_create>")
+	-- for k, v in pairs(args) do 
+	-- 	syslog.debug("\t+-- ",k, v) 
+	-- end
+	print_r(args)
+
 	local c = args.character or error("invalid argument")
 
 	local character = create(c.name, c.race, c.class)
+	syslog.debug("\t+-- character created:", character)
 	local id = skynet.call(database, "lua", "character", "reserve", uuid.gen(), c.name)
-	if not id then return {} end
+	if not id then 
+		syslog.error("\t+-- database reserve faild")
+
+		return {} 
+	end
+	syslog.debug("\t+-- character id:", id)
 
 	character.id = id
 	local json = dbpacker.packjson(character)

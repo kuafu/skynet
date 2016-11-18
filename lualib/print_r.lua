@@ -6,6 +6,7 @@ local type = type
 local pairs = pairs
 local tostring = tostring
 local next = next
+local syslog = require "syslog"
 
 local function print_r(root)
 	local cache = {  [root] = "." }
@@ -14,18 +15,18 @@ local function print_r(root)
 		for k,v in pairs(t) do
 			local key = tostring(k)
 			if cache[v] then
-				tinsert(temp,"  +" .. key .. " {" .. cache[v].."}")
+				tinsert(temp,"\t+" .. key .. " {" .. cache[v].."}")
 			elseif type(v) == "table" then
 				local new_key = name .. "." .. key
 				cache[v] = new_key
-				tinsert(temp,"  +" .. key .. _dump(v,space ..(next(t,k) and "|" or " " ).. srep(" ",#key),new_key))
+				tinsert(temp,"\t+" .. key .. _dump(v,space ..(next(t,k) and "|" or " " ).. srep(" ",#key),new_key))
 			else
-				tinsert(temp,"  +" .. key .. " [" .. tostring(v).."]")
+				tinsert(temp,"\t+" .. key .. " [" .. tostring(v).."]")
 			end
 		end
-		return tconcat(temp,"\n"..space)
+		return tconcat(temp,"\r\n"..space)
 	end
-	print(_dump(root, "",""))
+	syslog.debug("\n",_dump(root, "",""))
 end
 
 return print_r

@@ -31,7 +31,9 @@ function gamed.command_handler(cmd, ...)
 
 	function CMD.close(agent, account)
 		syslog.debugf("agent %d recycled", agent)
-
+		syslog.debugf("..........................................")
+		syslog.debugf("")
+		
 		online_account[account] = nil
 		table.insert(pool, agent)
 	end
