@@ -49,6 +49,16 @@ You can also use the other official Lua version , edit the makefile by yourself 
 ###Redis
 [Now use Redis3.0](http://github.com/MSOpenTech/redis/releases/download/win-3.0.503/Redis-x64-3.0.503.msi)
 
+###redis-rdb-tools
+https://github.com/sripathikrishnan/redis-rdb-tools
+-Install
+pip install rdbtools
+
+-Use
+rdb --command json dump.rdb
+
+-With Python 2.7
+
 <hr>
 
 #Enjoy
