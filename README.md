@@ -52,10 +52,11 @@ You can also use the other official Lua version , edit the makefile by yourself 
 <hr>
 
 #Enjoy
-![](https://upload.wikimedia.org/wikipedia/en/1/13/Albert_Einstein_violin.jpg)
-<p>If you can't explain it simply, you don't understand it well enough.
+![If you can't explain it simply, you don't understand it well enough.](https://upload.wikimedia.org/wikipedia/en/1/13/Albert_Einstein_violin.jpg)
 
+
+<HR>
 
 
 <p><p><p>
-Nov 19,2016 Kuafu
+Nov 19,2016
