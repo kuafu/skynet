@@ -17,3 +17,4 @@ userlog.txt
 /luaclib
 /cservice
 /*.sublime-workspace
+build/vs2013/skynet.VC.db
