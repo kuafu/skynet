@@ -8,12 +8,12 @@ local print_r = require "print_r"
 local packer = {}
 g_packer_debug_v = nil
 function packer.packjson(v)
-    skynet.error("")
-    skynet.error("packer.packjson:", v)
-    print_r(v)
-    skynet.error("-----------------------")
+    --skynet.error("")
+    --skynet.error("packer.packjson:", v)
+    --print_r(v)
+    --skynet.error("-----------------------")
     g_packer_debug_v = v
-    skynet.error(":",debug.traceback() )
+    --skynet.error(":",debug.traceback() )
 	return cjson.encode(v)
 	--return v
 end
