@@ -1,6 +1,6 @@
 --print("<file:loader>")
 
--- loader.lua在snlua中用loadfile加载
+-- loader.lua鍦╯nlua涓敤loadfile鍔犺浇
 --snlua.so!_init
 --snlua.so!_launch
 --skynet.exe!dispatch_message

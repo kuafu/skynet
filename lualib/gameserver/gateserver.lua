@@ -3,7 +3,7 @@ local netpack = require "netpack"
 local socketdriver = require "socketdriver"
 
 local syslog = require "syslog"
-
+local print_r = require( "print_r" )
 
 local gateserver = {}
 
@@ -62,11 +62,24 @@ function gateserver.start(handler)
 
 	local MSG = {}
 
+	local function handle_to_address(handle)
+		return tonumber("0x" .. string.sub(handle , 2))
+	end
+
     function MSG.open(fd, addr)
+    	syslog.debug("")
+        syslog.debug("list current service:")
+        local services = skynet.call(".launcher", "lua", "LIST")
+        for k, v in pairs( services ) do
+        	syslog.debugf("%s %d %s", k, handle_to_address(k), v )
+        end
+
     	syslog.noticef("")
 		syslog.noticef("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         syslog.noticef("gateserver open fd:%d, addr:%s", fd, addr)
-        syslog.debug(debug.traceback())
+        --syslog.debug(debug.traceback())
+
+
         if nclient >= maxclient then
 			return socketdriver.close(fd)
 		end
@@ -134,13 +147,18 @@ function gateserver.start(handler)
 
 	MSG.more = dispatch_queue
 
-	skynet.register_protocol {
+    syslog.noticef("")
+    syslog.noticef("=====================================================================")
+    syslog.noticef("gateserver socket protocol")
+
+    skynet.register_protocol {
 		name = "socket",
 		id = skynet.PTYPE_SOCKET,
 		unpack = function(msg, sz)
 			return netpack.filter(queue, msg, sz) 
 		end,
 		dispatch = function(_, _, q, type, ...)
+			syslog.debug("[gateserver socket dispatch] type:", type, ", params:", ...)
 			queue = q
 			if type then
 				return MSG[type](...) 

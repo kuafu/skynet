@@ -672,6 +672,7 @@ function skynet.pcall(start)
 	return xpcall(init_template, debug.traceback, start)
 end
 
+local proto_counter = 0
 function skynet.init_service(start)
     --skynet.error("<skynet.init_service>", start)
 	local ok, err = skynet.pcall(start)
@@ -682,6 +683,39 @@ function skynet.init_service(start)
 	else
 		skynet.send(".launcher","lua", "LAUNCHOK")
 	end
+
+
+
+	local file = io.open("protocol.txt", "a")
+	file:write("--------------------------------------\n")
+	file:write(string.format("#%d %d %s protocol:\n", proto_counter, skynet.self(), skynet.address(skynet.self())) )
+	proto_counter = proto_counter + 1
+	for k, v in pairs( proto ) do
+		if type(k)=="string" then
+			file:write( string.format("  +--%s\n", k) )
+			
+			for k2, v in pairs( v ) do
+				if k2 ~="name" and k2~="id" then 
+					file:write(string.format("    +--%8s %8s", k2, tostring(v)) ) 
+					file:write("\n")
+				end
+			end
+			
+		end
+	end
+	file:close()
+
+	-- skynet.error(string.format("%d %s protocol:", skynet.self(), skynet.address(skynet.self())) )
+	-- for k, v in pairs( proto ) do
+	-- 	if type(k)=="string" then
+	-- 		skynet.error("  +--", k )
+	-- 		for k2, v in pairs( v ) do
+	-- 			if k2 ~="name" and k2~="id" then skynet.error("    +--", k2, v ) end
+	-- 		end
+	-- 	end
+	-- end
+
+
 end
 
 --调用c函数skynet_callback注册回调到context上

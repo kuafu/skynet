@@ -28,14 +28,14 @@ function CMD.open(conf)
 	local port = assert(tonumber(conf.port))
 	local sock = socket.listen(host, port)
 
-    syslog.noticef("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    syslog.noticef("=====================================================================")
     syslog.noticef("loginserver listen on %s:%d", host, port)
 
 	local balance = 1
 	socket.start(sock, function(fd, addr)
         syslog.noticef("")
         syslog.noticef("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        syslog.noticef("New incomming user #%d, fd:%d, addr:%s", counter, fd, addr)
+        syslog.noticef("loginserver new incomming user #%d, fd:%d, addr:%s", counter, fd, addr)
         counter = counter + 1
         local loginslave = slave[balance]
 		balance = balance + 1
