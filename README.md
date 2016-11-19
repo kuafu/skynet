@@ -21,17 +21,17 @@ Develop Environment
 - windows
 - visual studio 2013，with SP4
 
-
 Start
 -------------------------------------------------------------------------------------------
 Build
 For windows, open build/vs2013/skynet.sln and build all
-You can use vs ide to debugging skynet
+
 
 Running：
+```
 1、工作目录设置为skynet.exe所在目录，默认为 $(ProjectDir)..\..\
 2、命令参数设置为config文件的相对路径，如 examples/config
-
+```
 
 Thirdparty
 -------------------------------------------------------------------------------------------
@@ -53,9 +53,9 @@ You can also use the other official Lua version , edit the makefile by yourself 
 
 #Enjoy
 ![](https://upload.wikimedia.org/wikipedia/en/1/13/Albert_Einstein_violin.jpg)
-If you can't explain it simply, you don't understand it well enough.
+<p>If you can't explain it simply, you don't understand it well enough.
 
 
 
-
+<p><p><p>
 Nov 19,2016 Kuafu
