@@ -18,3 +18,4 @@ userlog.txt
 /cservice
 /*.sublime-workspace
 build/vs2013/skynet.VC.db
+db/dump.rdb
