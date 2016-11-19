@@ -2,7 +2,7 @@
 
 Born
 -------------------------------------------------------------------------------------------
-此版本修改自官方版sanikoyes/skynet：
+此版本修改自sanikoyes/skynet：
 - sproto修改，添加了real（双精度浮点数double）的支持，以及variant类型（可以是real/int/string/bool）的支持
 - windows下不支持epoll，故采用event-select网络模型模拟epoll来保证最小改动skynet源码的情况下，实现网络通讯
 - windows平台下没有pipe兼容的接口，采用了socket api来模拟这一机制
