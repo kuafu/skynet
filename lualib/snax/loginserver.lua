@@ -50,9 +50,11 @@ local function write(service, fd, text)
 end
 
 local function launch_slave(auth_handler)
-	local function auth(fd, addr)
-		skynet.error(string.format("connect from %s(fd = %d)", addr, fd))
-		socket.start(fd)
+    local function auth(fd, addr)
+        syslog.noticef("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        syslog.noticef("loginserver connect from %s(fd = %d)", addr, fd)
+
+        socket.start(fd)
 
 		-- set socket buffer limit(8K)
 		-- If the attacker send large package, close the socket

@@ -26,8 +26,8 @@ function gameserver.start(gamed)
 	end
 
 	function handler.connect(fd, addr)
-		syslog.noticef("connect from %s(fd = %d)", addr, fd)
-		gateserver.open_client(fd)
+        syslog.noticef("gameserver handler.connect %s(fd = %d)", addr, fd)
+        gateserver.open_client(fd)
 	end
 
 	function handler.disconnect(fd)

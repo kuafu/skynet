@@ -12,6 +12,7 @@ local gameserver = {}
 
 local CMD = {}
 
+local counter = 0
 -- conf --> config.gameserver
 function CMD.open(conf)
     syslog.noticef("loginserver need %d slave", conf.slave)
@@ -27,15 +28,22 @@ function CMD.open(conf)
 	local port = assert(tonumber(conf.port))
 	local sock = socket.listen(host, port)
 
-	syslog.noticef("loginserver listen on %s:%d", host, port)
+    syslog.noticef("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    syslog.noticef("loginserver listen on %s:%d", host, port)
 
 	local balance = 1
 	socket.start(sock, function(fd, addr)
-		local loginslave = slave[balance]
+        syslog.noticef("")
+        syslog.noticef("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        syslog.noticef("New incomming user #%d, fd:%d, addr:%s", counter, fd, addr)
+        counter = counter + 1
+        local loginslave = slave[balance]
 		balance = balance + 1
-		if balance > nslave then balance = 1 end
+        if balance > nslave then balance = 1 end
 
-		skynet.call(loginslave, "lua", "auth", fd, addr)
+        syslog.noticef("balance loginslave to #%d", balance)
+        syslog.noticef("calling loginslave...")
+       skynet.call(loginslave, "lua", "auth", fd, addr)
 	end)
 end
 

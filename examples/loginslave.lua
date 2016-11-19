@@ -7,6 +7,8 @@ local srp = require "srp"
 local aes = require "aes"
 local uuid = require "uuid"
 
+local print_r = require( "print_r" ) 
+
 local traceback = debug.traceback
 
 
@@ -33,9 +35,12 @@ function CMD.init(m, id, conf)
 end
 
 local function close(fd)
+
 	if connection[fd] then
 		socket.close(fd)
 		connection[fd] = nil
+		syslog.debug("loinslave close fd:", fd, ", addr:%s", connection[fd] )
+		syslog.debug("")
 	end
 end
 
@@ -56,7 +61,7 @@ local function send_msg(fd, msg)
 end
 
 function CMD.auth(fd, addr)
-    print("loginslave.auth")
+    syslog.debugf("loginslave.auth waiting %dsec for message...", auth_timeout/1000)
 	connection[fd] = addr
 	skynet.timeout(auth_timeout, function()
 		if connection[fd] == addr then
@@ -71,7 +76,9 @@ function CMD.auth(fd, addr)
 	local type, name, args, response = read_msg(fd)
 	assert(type == "REQUEST")
 
-	if name == "handshake" then
+    syslog.debugf("OK. Get message type:%s, name:%s, args:", type, name)
+    print_r(args)
+    if name == "handshake" then
 		assert(args and args.name and args.client_pub, "invalid handshake request")
 
 		local account = skynet.call(database, "lua", "account", "load", args.name) or error("load account " .. args.name .. " failed")
@@ -165,6 +172,8 @@ end
 --
 skynet.start(function()
 	skynet.dispatch("lua", function(_, _, command, ...)
+		syslog.debug("")
+		syslog.debug("[loginslave dispatch] ", _, command, ...)
 		local function pret(ok, ...)
 			if not ok then 
                 syslog.warningf("----------------------------------")

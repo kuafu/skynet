@@ -46,6 +46,13 @@ lconnect(lua_State *L) {
 		return luaL_error(L, "Connect %s %d failed", addr, port);
 	}
 
+	struct sockaddr_in sin;
+	socklen_t len = sizeof(sin);
+	if(getsockname(fd, (struct sockaddr *)&sin, &len) == -1)
+		perror("getsockname");
+	else
+		printf("getsockname port: %d\n", ntohs(sin.sin_port));
+
 #ifdef _MSC_VER
 	int ul = 1;
 	ioctlsocket(fd, FIONBIO, &ul);

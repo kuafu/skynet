@@ -1,5 +1,7 @@
 local skynet = require "skynet"
 local socket = require "socket"
+local syslog = require "syslog"
+
 
 --[[
 	master manage data :
@@ -56,7 +58,7 @@ local function report_slave(fd, slave_id, slave_addr)
 end
 
 local function handshake(fd)
-	local t, slave_id, slave_addr = read_package(fd)
+    local t, slave_id, slave_addr = read_package(fd)
 	assert(t=='H', "Invalid handshake type " .. t)
 	assert(slave_id ~= 0 , "Invalid slave id 0")
 	if slave_node[slave_id] then
@@ -111,8 +113,9 @@ skynet.start(function()
 	local master_addr = skynet.getenv "standalone"
 	skynet.error("master listen socket " .. tostring(master_addr))
 	local fd = socket.listen(master_addr)
-	socket.start(fd , function(id, addr)
-		skynet.error("connect from " .. addr .. " " .. id)
+    socket.start(fd , function(id, addr)
+        syslog.info("")
+        syslog.info("connect from " .. addr .. " " .. id)
 		socket.start(id)
 		local ok, slave, slave_addr = pcall(handshake, id)
 		if ok then

@@ -1,1 +1,2 @@
+cls
 skynet examples/config

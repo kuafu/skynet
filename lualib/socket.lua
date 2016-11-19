@@ -1,5 +1,6 @@
 local driver = require "socketdriver"
 local skynet = require "skynet"
+local syslog = require "syslog"
 --print("<file:socket>")
 
 local skynet_core = require "skynet.core"
@@ -168,8 +169,10 @@ skynet.register_protocol {
 }
 
 local function connect(id, func)
-	skynet.error("<socket.connect>")
-	local newbuffer
+    --syslog.noticef("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    syslog.noticef("<socket.connect>")
+
+    local newbuffer
 	if func == nil then
 		newbuffer = driver.buffer()
 	end
@@ -198,7 +201,7 @@ local function connect(id, func)
 end
 
 function socket.open(addr, port)
-	skynet.error("<socket.open>", addr,":",port)
+	--skynet.error("<socket.open>", addr,":",port)
 	local id = driver.connect(addr,port)
 	skynet.error("+socket id", id)
 	return connect(id)

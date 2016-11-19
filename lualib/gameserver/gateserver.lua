@@ -21,6 +21,7 @@ skynet.register_protocol {
 local connection = {}
 
 function gateserver.open_client(fd)
+	syslog.debug("gateserver.open_client fd:",fd)
 	if connection[fd] then
 		socketdriver.start(fd)
 	end
@@ -48,6 +49,8 @@ function gateserver.start(handler)
 		local port = assert(tonumber(conf.port))
 		maxclient = conf.maxclient or 64
 
+		syslog.noticef("")
+		syslog.noticef("------------- gateserver -------------")
 		syslog.noticef("listen on %s:%d", addr, port)
 		socket = socketdriver.listen(addr, port)
 		socketdriver.start(socket)
@@ -59,8 +62,12 @@ function gateserver.start(handler)
 
 	local MSG = {}
 
-	function MSG.open(fd, addr)
-		if nclient >= maxclient then
+    function MSG.open(fd, addr)
+    	syslog.noticef("")
+		syslog.noticef("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        syslog.noticef("gateserver open fd:%d, addr:%s", fd, addr)
+        syslog.debug(debug.traceback())
+        if nclient >= maxclient then
 			return socketdriver.close(fd)
 		end
 
@@ -143,6 +150,7 @@ function gateserver.start(handler)
 
 	skynet.start(function()
 		skynet.dispatch("lua", function(_, address, cmd, ...)
+			syslog.debug("[gateserver dispatch] address:", address, ", cmd:", cmd, ", params:", ...)
 			local f = CMD[cmd]
 			if f then
 				skynet.retpack(f(address, ...))

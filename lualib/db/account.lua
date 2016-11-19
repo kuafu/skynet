@@ -36,9 +36,6 @@ function account.load(name)
     syslog.debug("acc:")
     print_r(acc)
     syslog.debug("---")
-    for k,v in pairs(acc) do
-    	syslog.debug("\t+-- ",k,v)
-    end
 	return acc
 end
 

@@ -437,6 +437,15 @@ open_socket(struct socket_server *ss, struct request_open * request, struct sock
 		sp_nonblocking(sock);
 		status = connect( sock, ai_ptr->ai_addr, ai_ptr->ai_addrlen);
 #endif
+
+		struct sockaddr_in sin;
+		socklen_t len = sizeof(sin);
+		if(getsockname(sock, (struct sockaddr *)&sin, &len) == -1)
+			perror("getsockname");
+		else
+			printf("socket_server getsockname port: %d\n", ntohs(sin.sin_port));
+
+
 		if ( status != 0 && errno != EINPROGRESS) {
 			close(sock);
 			sock = -1;
