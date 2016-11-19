@@ -15,7 +15,8 @@ end)
 
 function REQUEST.move(args)
 	assert(args and args.pos)
-
+	syslog.debug("move")
+	print_r( arg )
 	local npos = args.pos
 	local opos = user.character.movement.pos
 	for k, v in pairs(opos) do

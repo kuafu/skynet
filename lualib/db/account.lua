@@ -1,6 +1,7 @@
 local constant = require "constant"
 local srp = require "srp"
 local syslog	= require "syslog"
+local print_r = require "print_r"
 
 
 local account = {}
@@ -33,6 +34,8 @@ function account.load(name)
 --	acc.salt = "salt"
 --	acc.verifier = "verifier"
     syslog.debug("acc:")
+    print_r(acc)
+    syslog.debug("---")
     for k,v in pairs(acc) do
     	syslog.debug("\t+-- ",k,v)
     end

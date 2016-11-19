@@ -181,6 +181,8 @@ function CMD.aoi_unsubscribe(agent)
 end
 
 function CMD.aoi_manage(alist, rlist, ulist, scope)
+	syslog.debug("aoi_manage")
+
 	if(alist or ulist) and character_writer then
 		character_writer:commit()
 	end

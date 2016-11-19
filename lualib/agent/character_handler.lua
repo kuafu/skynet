@@ -141,6 +141,8 @@ function REQUEST.character_pick(args)
 	return { character = character }
 end
 
+
+
 attribute_string = {
 	"health",
 	"strength",

@@ -15,18 +15,18 @@ local function print_r(root)
 		for k,v in pairs(t) do
 			local key = tostring(k)
 			if cache[v] then
-				tinsert(temp,"\t+" .. string.format("%6s", key) .. " {" .. cache[v].."}")
+				tinsert(temp,"+-" .. string.format("%-6s", key) .. ": {" .. cache[v].."}")
 			elseif type(v) == "table" then
 				local new_key = name .. "." .. key
 				cache[v] = new_key
-				tinsert(temp,"\t+" .. string.format("%6s", key) .. _dump(v,space ..(next(t,k) and "|" or " " ).. srep(" ",4),new_key))
+				tinsert(temp,"+-" .. string.format("%-6s", key) .. _dump(v,space ..(next(t,k) and "|" or " " ).. srep(" ",5),new_key))
 			else
-				tinsert(temp,"\t+" .. string.format("%6s", key) .. " [" .. tostring(v).."]")
+				tinsert(temp,"+-" .. string.format("%-6s", key) .. ": [" .. tostring(v).."]")
 			end
 		end
-		return tconcat(temp,"\r\n"..space)
+		return tconcat(temp,"\n"..space)
 	end
-	syslog.debug("\n",_dump(root, "",""))
+	syslog.debug(_dump(root, "",""))
 end
 
 return print_r

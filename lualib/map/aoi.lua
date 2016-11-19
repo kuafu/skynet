@@ -1,3 +1,4 @@
+local syslog = require( "syslog" )
 local quadtree = require "map.quadtree"
 
 local aoi = {}
@@ -57,7 +58,7 @@ function aoi.remove (id)
 end
 
 function aoi.update (id, pos)
-	skyent.error("aoi.update", id, pos)
+	syslog.debug("aoi.update id:", id, ", pos:", pos)
 	local c = object[id]
 	if not c then return end
 

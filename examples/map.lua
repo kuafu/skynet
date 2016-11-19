@@ -52,9 +52,12 @@ function CMD.character_ready(agent, pos)
 end
 
 function CMD.move_blink(agent, pos)
+	syslog.debug("start move_blink", agent, pos)
 	local ok, add, update, remove = aoi.update(agent, pos)
 	if not ok then return end
+	
 	skynet.call(agent, "lua", "aoi_manage", add, remove, update, "move")
+
 	return true
 end
 
