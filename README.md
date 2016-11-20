@@ -54,6 +54,10 @@ https://github.com/sripathikrishnan/redis-rdb-tools
 -Install
 pip install rdbtools
 
+###ConEmu
+https://conemu.github.io/
+[Download ConEmu Stable, Installer](https://www.fosshub.com/ConEmu.html/ConEmuSetup.161022.exe)
+
 -Use
 rdb --command json dump.rdb
 
