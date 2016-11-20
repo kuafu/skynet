@@ -534,6 +534,13 @@ local function raw_dispatch_message(prototype, msg, sz, session, source, ...)
 			local co = co_create(f)
 			session_coroutine_id[co] = session
 			session_coroutine_address[co] = source
+
+			-- if prototype == 6 then
+			-- 	skynet.error( "---------->unpack:", p )
+			-- 	for k, v in pairs( p ) do
+			-- 		skynet.error("  +--", k, v )
+			-- 	end
+			-- end
 			suspend(co, coroutine.resume(co, session,source, p.unpack(msg,sz, ...)))
 		else
 			unknown_request(session, source, msg, sz, proto[prototype].name)
@@ -562,6 +569,9 @@ function skynet.dispatch_message(...)
 		end
 	end
 	assert(succ, tostring(err))
+
+	--just for debug
+	return "skynet.dispatch_message"
 end
 
 local service_index = 0
