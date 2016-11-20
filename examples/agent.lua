@@ -115,6 +115,7 @@ skynet.register_protocol {
 		return host:dispatch(msg, sz)
 	end,
 	dispatch = function(_, _, type, ...)
+		syslog.debug("[[agent dispatch client]] type:", type, ", params:",... )
 		if type == "REQUEST" then
 			handle_request(...)
 		elseif type == "RESPONSE" then
@@ -216,6 +217,7 @@ end
 
 skynet.start(function()
 	skynet.dispatch("lua", function(_, _, command, ...)
+		syslog.debug("[[agent dispatch command]] type:", command, ", params:",... )
 		local f = CMD[command]
 		if not f then
 			syslog.warningf("unhandled message(%s)", command) 

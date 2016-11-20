@@ -165,6 +165,7 @@ function gateserver.start(handler)
     syslog.noticef("=====================================================================")
     syslog.noticef("gateserver socket protocol ")
 
+    local counter = 0
     --c luaopen_netpack
     skynet.register_protocol {
 		name = "socket",
@@ -174,6 +175,10 @@ function gateserver.start(handler)
 			return netpack.filter(queue, msg, sz) 
 		end,
 		dispatch = function(_, _, q, type, ...)
+			syslog.debug("")
+			syslog.debug("")
+			syslog.debug(">>>>>>>>>>>>>>", counter)
+			counter = counter +1
             syslog.debug("[[gateserver dispatch socket self:", skynet.self(), "]] type:", type, ", params:", ...)
 
             queue = q
@@ -190,7 +195,6 @@ function gateserver.start(handler)
 			if f then
 				skynet.retpack(f(address, ...))
 			else
-				error()
 				skynet.retpack(handler.command(cmd, ...))
 			end
 		end)
