@@ -160,11 +160,14 @@ function CMD.challenge(session, secret)
 end
 
 function CMD.verify(session, secret)
+	syslog.debug("loginslave verify")
 	local t = saved_session[session] or error()
 
 	local text = aes.decrypt(secret, t.key) or error()
 	assert(text == t.token)
 	t.token = nil
+	print_r(t)
+	syslog.debug("END login verify")
 
 	return t.account
 end
@@ -173,7 +176,7 @@ end
 skynet.start(function()
 	skynet.dispatch("lua", function(_, _, command, ...)
 		syslog.debug("")
-		syslog.debug("[loginslave dispatch] ", _, command, ...)
+		syslog.debug("[[loginslave dispatch lua]] ", _, command, ...)
 		local function pret(ok, ...)
 			if not ok then 
                 syslog.warningf("----------------------------------")

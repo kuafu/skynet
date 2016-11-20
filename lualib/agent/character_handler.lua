@@ -45,7 +45,7 @@ local function check_character(account, id)
 end
 
 function REQUEST.character_list()
-    skynet.error("<REQUEST.character_list> account:", user.account)
+    syslog.notice("<REQUEST.character_list> account:", user.account)
 	local list = load_list(user.account)
     skynet.error("char list size:", #list )
     if #list==0 then

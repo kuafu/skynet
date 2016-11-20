@@ -4,7 +4,7 @@ local gameserver = require "gameserver.gameserver"
 local syslog = require "syslog"
 
 
-local logind = tonumber(...)
+local loginserver = tonumber(...)
 
 local gamed = {}
 
@@ -47,7 +47,9 @@ function gamed.command_handler(cmd, ...)
 end
 
 function gamed.auth_handler(session, token)
-	return skynet.call(logind, "lua", "verify", session, token)	
+	syslog.debug("gamed.auth_handler", session, token)
+	syslog.debug("  +--loginserver", loginserver)
+	return skynet.call(loginserver, "lua", "verify", session, token)	
 end
 
 function gamed.login_handler(fd, account)
@@ -64,6 +66,8 @@ function gamed.login_handler(fd, account)
 		agent = table.remove(pool, 1)
 		syslog.debugf("agent(%d) assigned, %d remain in pool", agent, #pool)
 	end
+
+	syslog.debug("new online account for agent", account, agent)
 	online_account[account] = agent
 
 	skynet.call(agent, "lua", "open", fd, account)

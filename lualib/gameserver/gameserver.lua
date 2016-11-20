@@ -36,6 +36,7 @@ function gameserver.start(gamed)
 
 	local function do_login(fd, msg, sz)
 		local type, name, args, response = host:dispatch(msg, sz)
+		syslog.debug("do_login",type, name, args, response)
 		assert(type == "REQUEST")
 		assert(name == "login")
 		assert(args.session and args.token)
@@ -47,6 +48,7 @@ function gameserver.start(gamed)
 
 	local traceback = debug.traceback
 	function handler.message(fd, msg, sz)
+		syslog.debug("gameserver handler.message", fd,msg,sz)
 		local queue = pending_msg[fd]
 		if queue then
 			table.insert(queue, { msg = msg, sz = sz })
@@ -54,6 +56,7 @@ function gameserver.start(gamed)
 			pending_msg[fd] = {}
 
 			local ok, account = xpcall(do_login, traceback, fd, msg, sz)
+			syslog.debug("  -->",ok,account)
 			if ok then
 				syslog.noticef("account %d login success", account)
 				local agent = gamed.login_handler(fd, account)

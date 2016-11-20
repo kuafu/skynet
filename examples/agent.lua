@@ -11,6 +11,7 @@ local aoi_handler       = require "agent.aoi_handler"
 local move_handler      = require "agent.move_handler"
 local combat_handler    = require "agent.combat_handler"
 
+local print_r = require "print_r"
 
 local gamed = tonumber(...)
 local database
@@ -129,7 +130,8 @@ local CMD = {}
 
 function CMD.open(fd, account)
 	local name = string.format("agent:%d", account)
-	syslog.debug("agent opened")
+	syslog.debug("agent opened" ,fd, account)
+	syslog.debug("agent name:", name)
 
 	user = { 
 		fd = fd, 
@@ -144,6 +146,12 @@ function CMD.open(fd, account)
 	RESPONSE = user.RESPONSE
 	
 	character_handler:register(user)
+	syslog.debug("register user for agent.character_handler name:", name, ", user table:")
+	print_r(user)
+	
+	syslog.debug("open agent succeeded")
+	syslog.debug("agent = user = account = character_handler")
+	syslog.debug("HELLOW AGENT")
 
 	last_heartbeat_time = skynet.now()
 	heartbeat_check()
