@@ -56,6 +56,7 @@ _cb(struct skynet_context * context, void * ud, int type, int session, uint32_t 
 	r = lua_pcall(L, 5, 1 , trace);
 	//"skynet.dispatch_message"
 	char* szMsg = lua_tostring(L, lua_gettop(L));
+	lua_pop(L, 1);
 #else
 	r = lua_pcall(L, 5, 0, trace);
 #endif
