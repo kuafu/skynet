@@ -51,11 +51,14 @@ _cb(struct skynet_context * context, void * ud, int type, int session, uint32_t 
 	lua_pushinteger(L, session);
 	lua_pushinteger(L, source);
 
+#if 1
 	//5个参数0个返回,增加一个用于调试的返回值
 	r = lua_pcall(L, 5, 1 , trace);
-
 	//"skynet.dispatch_message"
 	char* szMsg = lua_tostring(L, lua_gettop(L));
+#else
+	r = lua_pcall(L, 5, 0, trace);
+#endif
 
 	if (r == LUA_OK) {
 		return 0;
