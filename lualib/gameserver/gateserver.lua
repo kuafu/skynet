@@ -42,7 +42,12 @@ function gateserver.forward(fd, agent)
 	end
 end
 
+-- gamed is the handler
 function gateserver.start(handler)
+
+	-- CMD for lua msg
+	-- MSG for socket msg
+	---------------------------------------------------
 
 	function CMD.open(source, conf)
 		local addr = conf.address or "0.0.0.0"
@@ -77,8 +82,6 @@ function gateserver.start(handler)
     	syslog.noticef("")
 		syslog.noticef("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         syslog.noticef("gateserver open fd:%d, addr:%s", fd, addr)
-        --syslog.debug(debug.traceback())
-
 
         if nclient >= maxclient then
 			return socketdriver.close(fd)
@@ -122,6 +125,7 @@ function gateserver.start(handler)
 	end
 
 	local function dispatch_msg(fd, msg, sz)
+		syslog.debug("gateserver dispatch_msg ", fd, msg, sz)
 		local c = connection[fd]
 		local agent = c.agent
 		if agent then
@@ -133,9 +137,14 @@ function gateserver.start(handler)
 
 	MSG.data = dispatch_msg
 
-	local function dispatch_queue()
-		local fd, msg, sz = netpack.pop(queue)
-		if fd then
+    local function dispatch_queue()
+        
+        --syslog.debug("gateserver start netpack pop ")
+        local fd, msg, sz = netpack.pop(queue)
+        syslog.debug("gateserver netpack pop ",fd, msg, sz)
+        --print_r(msg)
+        
+        if fd then
 			skynet.fork(dispatch_queue)
 			dispatch_msg(fd, msg, sz)
 
@@ -149,17 +158,20 @@ function gateserver.start(handler)
 
     syslog.noticef("")
     syslog.noticef("=====================================================================")
-    syslog.noticef("gateserver socket protocol")
+    syslog.noticef("gateserver socket protocol ")
 
+    --c luaopen_netpack
     skynet.register_protocol {
 		name = "socket",
 		id = skynet.PTYPE_SOCKET,
 		unpack = function(msg, sz)
+			--syslog.debug("[gateserver unpack socket] msg:", msg, sz )
 			return netpack.filter(queue, msg, sz) 
 		end,
 		dispatch = function(_, _, q, type, ...)
-			syslog.debug("[gateserver socket dispatch] type:", type, ", params:", ...)
-			queue = q
+            syslog.debug("[gateserver dispatch socket self:", skynet.self(), "] type:", type, ", params:", ...)
+
+            queue = q
 			if type then
 				return MSG[type](...) 
 			end
@@ -168,11 +180,12 @@ function gateserver.start(handler)
 
 	skynet.start(function()
 		skynet.dispatch("lua", function(_, address, cmd, ...)
-			syslog.debug("[gateserver dispatch] address:", address, ", cmd:", cmd, ", params:", ...)
+			syslog.debug("[gateserver dispatch lua] src addr:", address, ", cmd:", cmd, ", params:", ...)
 			local f = CMD[cmd]
 			if f then
 				skynet.retpack(f(address, ...))
 			else
+				error()
 				skynet.retpack(handler.command(cmd, ...))
 			end
 		end)

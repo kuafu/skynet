@@ -201,7 +201,7 @@ local function connect(id, func)
 end
 
 function socket.open(addr, port)
-	--skynet.error("<socket.open>", addr,":",port)
+	syslog.debug("<socket.open>", addr,":",port)
 	local id = driver.connect(addr,port)
 	skynet.error("+socket id", id)
 	return connect(id)

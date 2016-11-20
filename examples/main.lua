@@ -27,11 +27,13 @@ skynet.start(function()
     skynet.error("finishing loginserver")
 
 	local gamed = skynet.newservice("gamed", loginserver)
+	syslog.debug("call gamed lua open")
 	skynet.call(gamed, "lua", "open", game_config)
 
     skynet.error ("::::::::::::::::::::::: Server Ready :::::::::::::::::::::::")
 
 
+    -- debug only
 	syslog.debug("")
     syslog.debug("list current service:")
     local services = skynet.call(".launcher", "lua", "LIST")

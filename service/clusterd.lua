@@ -1,3 +1,5 @@
+error()
+
 local skynet = require "skynet"
 local sc = require "socketchannel"
 local socket = require "socket"

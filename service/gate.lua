@@ -1,3 +1,6 @@
+
+error()
+
 local skynet = require "skynet"
 print("<file:gate>")
 --print("[skynet]",skynet)
@@ -33,9 +36,9 @@ function handler.message(fd, msg, sz)
 end
 
 function handler.connect(fd, addr)
---    skynet.error("--------------------------------------")
---    skynet.error(debug.traceback())
---    skynet.error("--------------------------------------")
+    -- skynet.error("--------------------------------------")
+    -- skynet.error(debug.traceback())
+    -- skynet.error("--------------------------------------")
     skynet.error("<gate.handler.connect>")
 	local c = {
 		fd = fd,
