@@ -51,7 +51,6 @@
     <Compile Include="common\proto\game_proto.lua" />
     <Compile Include="common\proto\login_proto.lua" />
     <Compile Include="examples\agent.lua" />
-    <Compile Include="examples\client.lua" />
     <Compile Include="examples\database.lua" />
     <Compile Include="examples\gamed.lua" />
     <Compile Include="examples\gdd.lua" />
@@ -59,7 +58,6 @@
     <Compile Include="examples\loginslave.lua" />
     <Compile Include="examples\main.lua" />
     <Compile Include="examples\map.lua" />
-    <Compile Include="examples\print_r.lua" />
     <Compile Include="examples\protod.lua" />
     <Compile Include="examples\world.lua" />
     <Compile Include="lualib\agent\aoi_handler.lua" />
@@ -132,7 +130,6 @@
     <Compile Include="service\dbg.lua" />
     <Compile Include="service\debug_agent.lua" />
     <Compile Include="service\debug_console.lua" />
-    <Compile Include="service\gate.lua" />
     <Compile Include="service\launcher.lua" />
     <Compile Include="service\multicastd.lua" />
     <Compile Include="service\service_mgr.lua" />
