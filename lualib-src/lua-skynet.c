@@ -33,13 +33,17 @@ _cb(struct skynet_context * context, void * ud, int type, int session, uint32_t 
 	int trace = 1;
 	int r;
 	int top = lua_gettop(L);
+
 	if (top == 0) {
 		lua_pushcfunction(L, traceback);
+		//从注册表中取回lua函数，为之前在_callback中保存的skynet.dispatch_message
 		lua_rawgetp(L, LUA_REGISTRYINDEX, _cb);
 	} else {
 		assert(top == 2);
 	}
-	lua_pushvalue(L,2);
+
+	lua_pushvalue(L,2);	//lua中的skynet.dispatch_message
+	//luaL_checktype(L, 1, LUA_TFUNCTION); 
 
 	lua_pushinteger(L, type);
 	lua_pushlightuserdata(L, (void *)msg);
@@ -47,7 +51,11 @@ _cb(struct skynet_context * context, void * ud, int type, int session, uint32_t 
 	lua_pushinteger(L, session);
 	lua_pushinteger(L, source);
 
-	r = lua_pcall(L, 5, 0 , trace);
+	//5个参数0个返回,增加一个用于调试的返回值
+	r = lua_pcall(L, 5, 1 , trace);
+
+	//"skynet.dispatch_message"
+	char* szMsg = lua_tostring(L, lua_gettop(L));
 
 	if (r == LUA_OK) {
 		return 0;
@@ -80,6 +88,15 @@ forward_cb(struct skynet_context * context, void * ud, int type, int session, ui
 	return 1;
 }
 
+/*
+Lua 提供了一个 注册表， 这是一个预定义出来的表， 可以用来保存任何 C 代码想保存的 Lua 值。
+这个表可以用有效伪索引 LUA_REGISTRYINDEX 来定位。
+luaL_checktype(L, 1, LUA_TTABLE);
+void lua_rawsetp(lua_State *L, int index, const void *p);
+等价于 t[k] = v ， 这里的 t 是指给定索引处的表， k 是指针 p 对应的轻量用户数据。 而 v 是栈顶的值。
+*/
+
+// caller: lua skynet.start
 static int
 _callback(lua_State *L) {
 	static int trace_back = 0;
@@ -90,6 +107,9 @@ _callback(lua_State *L) {
 	int forward = lua_toboolean(L, 2);
 	luaL_checktype(L,1,LUA_TFUNCTION);
 	lua_settop(L,1);
+
+	// 栈上第一个位置对应 skynet.dispatch_message
+	// 将其保存到注册表，使用_cb的函数地址作为key
 	lua_rawsetp(L, LUA_REGISTRYINDEX, _cb);
 
 	lua_rawgeti(L, LUA_REGISTRYINDEX, LUA_RIDX_MAINTHREAD);
