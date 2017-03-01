@@ -26,7 +26,12 @@ local function print_r(root)
 		end
 		return tconcat(temp,"\n"..space)
 	end
-	syslog.debug(_dump(root, "",""))
+
+	local s = _dump(root, "    ", "<name>")
+	--ignor first character "\n"
+	syslog.debug("\n  {\n"..s:sub(2).."\n  }")
+	--syslog.debug(s:sub(2))
+	--syslog.debug("  }")
 end
 
 return print_r
