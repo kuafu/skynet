@@ -58,7 +58,7 @@ function gameserver.start(gamed)
 			local ok, account = xpcall(do_login, traceback, fd, msg, sz)
 			syslog.debug("  -->",ok,account)
 			if ok then
-				syslog.noticef("account %d login success", account)
+				syslog.noticef("account %d(FD%d) login success", account, fd)
 				local agent = gamed.login_handler(fd, account)
 				queue = pending_msg[fd]
 				for _, t in pairs(queue) do

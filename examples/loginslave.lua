@@ -55,13 +55,17 @@ local function read_msg(fd)
 	return host:dispatch(msg, size)
 end
 
+
 local function send_msg(fd, msg)
 	local package = string.pack(">s2", msg)
+	syslog.debugf(">>> send to fd:%d, len:%d", fd, string.len(package))
 	socket.write(fd, package)
 end
 
 function CMD.auth(fd, addr)
-    syslog.debugf("loginslave.auth waiting %dsec for message...", auth_timeout/1000)
+	syslog.debug("")
+	syslog.debug("------------------------------------------------------------------")
+	syslog.debugf("loginslave.auth waiting %dsec for message...", auth_timeout/1000)
 	connection[fd] = addr
 	skynet.timeout(auth_timeout, function()
 		if connection[fd] == addr then
@@ -82,7 +86,8 @@ function CMD.auth(fd, addr)
 		assert(args and args.name and args.client_pub, "invalid handshake request")
 
 		local account = skynet.call(database, "lua", "account", "load", args.name) or error("load account " .. args.name .. " failed")
-
+		syslog.debugf("account %s in database:", args.name)
+		print_r(account)
 		local session_key, _, pkey = srp.create_server_session_key(account.verifier, args.client_pub)
 		local challenge = srp.random()
 
@@ -92,6 +97,7 @@ function CMD.auth(fd, addr)
 					server_pub = pkey,
 					challenge = challenge,
 				}
+
 		send_msg(fd, msg)
 
 		type, name, args, response = read_msg(fd)
@@ -160,7 +166,19 @@ function CMD.challenge(session, secret)
 end
 
 function CMD.verify(session, secret)
-	syslog.debug("loginslave verify")
+	syslog.debug("loginslave verify", session, secret)
+	syslog.debug("saved_session len:", #saved_session)
+	-- for k,v in pairs(saved_session) do
+	-- 	syslog.debug("-------->",k,v)
+	-- 		for k,v in pairs(v) do
+	-- 			syslog.debug(k,v)
+	-- 		end
+	-- end
+
+	if not saved_session[session] then
+		syslog.error("session is not eixst: ",session)
+	end
+
 	local t = saved_session[session] or error()
 
 	local text = aes.decrypt(secret, t.key) or error()

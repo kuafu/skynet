@@ -53,9 +53,10 @@ function gamed.auth_handler(session, token)
 end
 
 function gamed.login_handler(fd, account)
+	syslog.debug("----------------------------------------------------")
 	local agent = online_account[account]
 	if agent then
-		syslog.warningf("multiple login detected for account %d", account)
+		syslog.warningf("multiple login detected for account %d(FD%d)", account, fd)
 		skynet.call(agent, "lua", "kick", account)
 	end
 
@@ -67,7 +68,7 @@ function gamed.login_handler(fd, account)
 		syslog.debugf("agent(%d) assigned, %d remain in pool", agent, #pool)
 	end
 
-	syslog.debug("new online account for agent", account, agent)
+	syslog.debugf("new online account %s for agent %s", account, agent)
 	online_account[account] = agent
 
 	skynet.call(agent, "lua", "open", fd, account)

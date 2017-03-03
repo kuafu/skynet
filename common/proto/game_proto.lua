@@ -7,6 +7,7 @@ local types = [[
 .package {
 	type 0 : integer
 	session 1 : integer
+	uid 2: integer
 }
 
 .general {
@@ -110,7 +111,8 @@ character_pick 2 {
 
 	response {
 		character 0 : character
-		errno 1 : integer
+		uid 1:integer
+		errno 2 : integer
 	}
 }
 

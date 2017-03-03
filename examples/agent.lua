@@ -31,6 +31,7 @@ local host, proto_request = protoloader.load(protoloader.GAME)
 
 local user
 
+
 local function send_msg(fd, msg)
 	local package = string.pack(">s2", msg)
 	socket.write(fd, package)
@@ -41,7 +42,7 @@ local session = {}
 local session_id = 0
 local function send_request(name, args)
 	session_id = session_id + 1
-	local str = proto_request(name, args, session_id)
+	local str = proto_request(user_fd, name, args, session_id)
 	send_msg(user_fd, str)
 	session[session_id] = { name = name, args = args }
 end
@@ -147,7 +148,9 @@ function CMD.open(fd, account)
 	RESPONSE = user.RESPONSE
 	
 	character_handler:register(user)
-	syslog.debug("register user for agent.character_handler name:", name, ", user table:")
+	syslog.debug("")
+	syslog.debug("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+	syslog.debug("register user for agent.character_handler name:", name, ", fd:", user_fd, ", user table:")
 	print_r(user)
 	
 	syslog.debug("open agent succeeded")

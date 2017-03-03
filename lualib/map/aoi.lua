@@ -8,6 +8,7 @@ local qtree
 local radius
 
 function aoi.init (bbox, r)
+	syslog.debug("aoi.init box:",bbox.left, bbox.top, bbox.right, bbox.bottom)
 	qtree = quadtree.new (bbox.left, bbox.top, bbox.right, bbox.bottom)
 	radius = r
 end
