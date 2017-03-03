@@ -2,6 +2,7 @@ local skynet = require "skynet"
 
 local syslog = require "syslog"
 local handler = require "agent.handler"
+local print_r = require "print_r"
 
 
 local REQUEST = {}

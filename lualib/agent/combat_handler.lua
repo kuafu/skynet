@@ -3,7 +3,9 @@ local skynet = require "skynet"
 local syslog = require "syslog"
 local handler = require "agent.handler"
 local aoi_handler = require "agent.aoi_handler"
+local print_r = require "print_r"
 
+syslog.debug("aoi_handler", aoi_handler)
 
 local REQUEST = {}
 local CMD = {}
@@ -17,7 +19,8 @@ end)
 
 function REQUEST.combat(args)
 	assert(args and args.target)
-
+	syslog.debug("REQUEST.combat")
+	print_r(args)
 	local tid = args.target
 	local agent = aoi_handler.find(tid) or error()
 

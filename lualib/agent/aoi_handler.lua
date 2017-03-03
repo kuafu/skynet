@@ -3,6 +3,7 @@ local sharemap = require "sharemap"
 
 local syslog = require "syslog"
 local handler = require "agent.handler"
+local print_r = require "print_r"
 
 
 local RESPONSE = {}
@@ -222,6 +223,8 @@ function RESPONSE.aoi_update_attribute(request, response)
 end
 
 function handler.find(id)
+	syslog.debug("<handler.find>")
+	print_r(subscribe_character)
 	local t = subscribe_character[id]
 	if t then
 		return t.agent
