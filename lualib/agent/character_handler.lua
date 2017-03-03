@@ -138,7 +138,7 @@ function REQUEST.character_pick(args)
 	local world = skynet.uniqueservice("world")
 	skynet.call(world, "lua", "character_enter", id)
 	syslog.debug("---------------->character_pick", user.fd)
-	return { character = character, uid = user.fd }
+	return { character = character, sid = user.fd }
 end
 
 

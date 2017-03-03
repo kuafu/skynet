@@ -192,7 +192,6 @@ local function gen_response(self, response, session)
 	return function(args)
 		header_tmp.type = nil
 		header_tmp.session = session
-		--header_tmp.uid = 3932
 		local header = core.encode(self.__package, header_tmp)
 		if response then
 			local content = core.encode(response, args)
@@ -207,7 +206,7 @@ function host:dispatch(...)
 	local bin = core.unpack(...)
 	header_tmp.type = nil
 	header_tmp.session = nil
-	header_tmp.uid = nil
+	header_tmp.sid = nil
 	local header, size = core.decode(self.__package, bin, header_tmp)
 	local content = bin:sub(size + 1)
 	if header.type then
@@ -240,11 +239,11 @@ end
 --host:attach生成打包函数，对方的host:dispatch可以解开这个包
 function host:attach(sproto)
   --
-  return function(uid, name, args, session)
+  return function(sid, name, args, session)
 		local proto = queryproto(sproto, name)
 		header_tmp.type = proto.tag
 		header_tmp.session = session
-		header_tmp.uid = uid
+		header_tmp.sid = sid
 		local header = core.encode(self.__package, header_tmp)
 
 		if session then
