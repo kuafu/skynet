@@ -1,0 +1,25 @@
+
+M:\skynet\skynet_mmo\db>rdb --command json dump.rdb 
+[{
+"character:31773039982983270":
+{
+	"41":
+	{
+		"general":{
+			"map":"Stormwind City",
+			"race":"human",
+			"name":"walker2",
+			"class":"warrior"},
+			"id":3177303998298327041,
+			"attribute":{"level":1,"health":130,"exp":0	},
+		"movement":{"mode":0,"pos":{"y":10,"x":123,"o":180,"z":321}}
+	}
+},	
+"char-list:31773039574961367":{
+	"5":"[3177303998298327041]"},
+"char-name":{
+	"walker2":3177303998298327041},
+"user:test2016":{
+	"account":3177303957496136705,"salt":"","verifier":""}
+
+}]
