@@ -117,6 +117,9 @@ character_pick 2 {
 }
 
 map_ready 100 {
+	response {
+		ok 0 : boolean
+	}
 }
 
 move 200 {

@@ -23,9 +23,10 @@ handler:init(function(u)
 end)
 
 local function load_list(account)
-    --print("load_list")
+    skynet.error("load_list")
     syslog.debug("load_list database addr:", database)
 	local list = skynet.call(database, "lua", "character", "list", account)
+	skynet.error(":",list)
 	if list then
 		list = dbpacker.unpackjson(list)
 	else
@@ -129,7 +130,8 @@ end
 
 function REQUEST.character_pick(args)
 	local id = args.id or error()
-	assert(check_character(user.account, id))
+	syslog.debug("pick char", user.account)
+	assert(check_character(user.account, id), "user.account isnot exist")
 
 	local c = skynet.call(database, "lua", "character", "load", id) or error()
 	local character = dbpacker.unpackjson(c)

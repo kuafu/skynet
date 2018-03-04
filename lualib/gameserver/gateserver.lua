@@ -177,7 +177,7 @@ function gateserver.start(handler)
 		dispatch = function(_, _, q, type, ...)
 			syslog.debug("")
 			syslog.debug("")
-			syslog.debug(">>>>>>>>>>>>>>", counter)
+			syslog.debug("------------------------------ ", counter, " ------------------------------")
 			counter = counter +1
             syslog.debug("[[gateserver dispatch socket self:", skynet.self(), "]] type:", type, ", params:", ...)
 

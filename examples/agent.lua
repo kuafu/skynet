@@ -200,9 +200,8 @@ end
 
 function CMD.world_enter(world)
 	local name = string.format("agent:%d:%s", user.character.id, user.character.general.name)
-
+	syslog.debugf("agent world_enter %s", name)
 	character_handler.init(user.character)
-
 	user.world = world
 	character_handler:unregister(user)
 

@@ -1,222 +1,32 @@
 --------------------------------------
 #0 16777226 :0100000a protocol:
   +--socket
-    +--dispatch function: 02E59FE8
-    +--  unpack function: 6CDA4360
+    +--dispatch function: 03698058
+    +--  unpack function: 71384360
   +--lua
-    +--    pack function: 02E25B38
-    +--  unpack function: 02E25B88
+    +--    pack function: 03682BE8
+    +--  unpack function: 03682C38
   +--snax
-    +--    pack function: 02E25B38
-    +--  unpack function: 02E25B88
+    +--    pack function: 03682BE8
+    +--  unpack function: 03682C38
   +--response
   +--debug
-    +--    pack function: 02E25B38
-    +--  unpack function: 02E25B88
-    +--dispatch function: 02E51B90
+    +--    pack function: 03682BE8
+    +--  unpack function: 03682C38
+    +--dispatch function: 0368D048
   +--error
-    +--dispatch function: 02E19380
-    +--  unpack function: 02E4A9F0
+    +--dispatch function: 03660938
+    +--  unpack function: 03669320
 --------------------------------------
 #0 16777227 :0100000b protocol:
   +--debug
-    +--    pack function: 008EA440
-    +--  unpack function: 008EA490
-    +--dispatch function: 02E58280
+    +--    pack function: 0369DB58
+    +--  unpack function: 0369DBA8
+    +--dispatch function: 03695C08
   +--lua
-    +--    pack function: 008EA440
-    +--  unpack function: 008EA490
+    +--    pack function: 0369DB58
+    +--  unpack function: 0369DBA8
   +--error
-    +--dispatch function: 02E19958
-    +--  unpack function: 02E6A360
-  +--response
---------------------------------------
-#0 16777228 :0100000c protocol:
-  +--socket
-    +--dispatch function: 02F79048
-    +--  unpack function: 6CDA4360
-  +--lua
-    +--    pack function: 02F4A9D8
-    +--  unpack function: 02F4AA28
-    +--dispatch function: 02F80E68
-  +--response
-  +--debug
-    +--    pack function: 02F4A9D8
-    +--  unpack function: 02F4AA28
-    +--dispatch function: 02F680A0
-  +--error
-    +--dispatch function: 02F62C70
-    +--  unpack function: 02F51938
---------------------------------------
-#0 16777229 :0100000d protocol:
-  +--socket
-    +--dispatch function: 02FDED70
-    +--  unpack function: 6CDA4360
-  +--lua
-    +--    pack function: 02F82AD8
-    +--  unpack function: 02F82B28
-    +--dispatch function: 02FF2C40
-  +--response
-  +--debug
-    +--    pack function: 02F82AD8
-    +--  unpack function: 02F82B28
-    +--dispatch function: 02FD43F0
-  +--error
-    +--dispatch function: 02FD9CF8
-    +--  unpack function: 02FDE230
---------------------------------------
-#0 16777230 :0100000e protocol:
-  +--socket
-    +--dispatch function: 0300DA08
-    +--  unpack function: 6CDA4360
-  +--lua
-    +--    pack function: 02FE46F0
-    +--  unpack function: 02FE4740
-    +--dispatch function: 030BE608
-  +--response
-  +--debug
-    +--    pack function: 02FE46F0
-    +--  unpack function: 02FE4740
-    +--dispatch function: 02FF6AB0
-  +--error
-    +--dispatch function: 02FFA2A0
-    +--  unpack function: 02FDF730
---------------------------------------
-#0 16777231 :0100000f protocol:
-  +--socket
-    +--dispatch function: 031211B8
-    +--  unpack function: 03121170
-  +--debug
-    +--    pack function: 030DDF00
-    +--  unpack function: 030DDF50
-    +--dispatch function: 03033760
-  +--response
-  +--lua
-    +--    pack function: 030DDF00
-    +--  unpack function: 030DDF50
-    +--dispatch function: 031C2850
-  +--client
-  +--error
-    +--dispatch function: 03018E30
-    +--  unpack function: 0309AE60
---------------------------------------
-#0 16777233 :01000011 protocol:
-  +--debug
-    +--    pack function: 03328358
-    +--  unpack function: 033283A8
-    +--dispatch function: 033033E8
-  +--lua
-    +--    pack function: 03328358
-    +--  unpack function: 033283A8
-    +--dispatch function: 03329AC8
-  +--error
-    +--dispatch function: 032085F8
-    +--  unpack function: 032D7AA0
-  +--response
---------------------------------------
-#0 16777232 :01000010 protocol:
-  +--socket
-    +--dispatch function: 031A5EE0
-    +--  unpack function: 6CDA4360
-  +--lua
-    +--    pack function: 031C51E0
-    +--  unpack function: 031C5230
-    +--dispatch function: 03208968
-  +--response
-  +--debug
-    +--    pack function: 031C51E0
-    +--  unpack function: 031C5230
-    +--dispatch function: 03125388
-  +--client
-    +--dispatch function: 032C4420
-    +--  unpack function: 032D73A0
-  +--error
-    +--dispatch function: 031E0A58
-    +--  unpack function: 031A44E0
---------------------------------------
-#0 16777234 :01000012 protocol:
-  +--debug
-    +--    pack function: 0332BDC8
-    +--  unpack function: 0332BE18
-    +--dispatch function: 033077B0
-  +--lua
-    +--    pack function: 0332BDC8
-    +--  unpack function: 0332BE18
-  +--error
-    +--dispatch function: 03208A70
-    +--  unpack function: 032D8660
-  +--response
---------------------------------------
-#0 16777236 :01000014 protocol:
-  +--debug
-    +--    pack function: 03333FC8
-    +--  unpack function: 03334018
-    +--dispatch function: 033595C0
-  +--lua
-    +--    pack function: 03333FC8
-    +--  unpack function: 03334018
-    +--dispatch function: 0335B0C0
-  +--error
-    +--dispatch function: 0334B660
-    +--  unpack function: 033656C8
-  +--response
---------------------------------------
-#0 16777237 :01000015 protocol:
-  +--debug
-    +--    pack function: 03337358
-    +--  unpack function: 033841D0
-    +--dispatch function: 0335E360
-  +--lua
-    +--    pack function: 03337358
-    +--  unpack function: 033841D0
-    +--dispatch function: 0335F5F0
-  +--error
-    +--dispatch function: 03018B18
-    +--  unpack function: 03366948
-  +--response
---------------------------------------
-#0 16777235 :01000013 protocol:
-  +--debug
-    +--    pack function: 03330B48
-    +--  unpack function: 03330B98
-    +--dispatch function: 033547D8
-  +--lua
-    +--    pack function: 03330B48
-    +--  unpack function: 03330B98
-    +--dispatch function: 030302C8
-  +--error
-    +--dispatch function: 0334B088
-    +--  unpack function: 032D9620
-  +--response
-
-list current service::
-:01000014 16777236 snlua map 16777235
-:01000008 16777224 snlua service_mgr
-:0100000c 16777228 snlua database
-:01000005 16777221 snlua cslave
-:01000015 16777237 snlua map 16777235
-:0100000e 16777230 snlua loginslave
-:0100000b 16777227 snlua protod
-:01000009 16777225 snlua main
-:0100000a 16777226 snlua debug_console 9333
-:0100000f 16777231 snlua gamed 16777229
-:01000013 16777235 snlua world
-:01000004 16777220 snlua cmaster
-:01000012 16777234 snlua gdd
-:0100000d 16777229 snlua loginserver
-:01000007 16777223 snlua datacenterd
-:01000011 16777233 snlua sharedatad
-:01000010 16777232 snlua agent 16777231
---------------------------------------
-#0 16777225 :01000009 protocol:
-  +--debug
-    +--    pack function: 02E16A88
-    +--  unpack function: 02E16AD8
-    +--dispatch function: 02E128A0
-  +--lua
-    +--    pack function: 02E16A88
-    +--  unpack function: 02E16AD8
-  +--error
-    +--dispatch function: 02DD4128
-    +--  unpack function: 02E19CB8
+    +--dispatch function: 036A5E58
+    +--  unpack function: 036A3248
   +--response

@@ -1,3 +1,4 @@
+
 local core = require "sproto.core"
 local assert = assert
 

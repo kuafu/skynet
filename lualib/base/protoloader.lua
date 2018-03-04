@@ -2,6 +2,7 @@ local sprotoloader = require "sprotoloader"
 
 local loginp       = require "proto.login_proto"
 local gamep        = require "proto.game_proto"
+local syslog       = require "syslog"
 
 local loader = {
 	GAME_TYPES = 0,
@@ -16,7 +17,8 @@ local loader = {
 }
 
 function loader.init()
-	sprotoloader.save(gamep.types, loader.GAME_TYPES)
+  
+    sprotoloader.save(gamep.types, loader.GAME_TYPES)
 
 	sprotoloader.save(loginp.c2s, loader.LOGIN_C2S)
 	sprotoloader.save(loginp.s2c, loader.LOGIN_S2C)
@@ -26,8 +28,9 @@ function loader.init()
 end
 
 function loader.load(index)
-    --sprotoloader.loadµÃµ½Ò»¸ölua sproto±í
-	local host = sprotoloader.load(index):host "package"
+
+    --sprotoloader.loadå¾—åˆ°ä¸€ä¸ªlua sprotoè¡¨
+    local host = sprotoloader.load(index):host "package"
 	local request = host:attach(sprotoloader.load(index + 1))
 	return host, request
 end
